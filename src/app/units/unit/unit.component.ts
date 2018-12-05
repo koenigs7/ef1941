@@ -20,6 +20,7 @@ export class UnitComponent implements OnInit {
     }
 
     clicked(event) {
+        this.x += 10;
         console.log(event);
         this.selected = !this.selected;
         if ( this.selected ) {
