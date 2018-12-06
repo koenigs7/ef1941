@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MoveService } from 'src/app/services/move.service';
 
 @Component({
     selector: 'app-unit',
@@ -8,28 +9,42 @@ import { Component, OnInit } from '@angular/core';
 export class UnitComponent implements OnInit {
 
     public x = 40;
-    public y = 100;
+    public y = 40;
     public selected = false;
 
-    constructor() { }
+    constructor(private moveService: MoveService) { }
 
     ngOnInit() {
-        setTimeout(() => {
-            this.x++;
-        }, 1000);
     }
 
     clicked(event) {
-        this.x += 10;
-        console.log(event);
         this.selected = !this.selected;
         if ( this.selected ) {
             this.x -= 2;
             this.y -= 2;
+            this.moveService.setFocusedUnit(this);
         } else {
             this.x += 2;
             this.y += 2;
+            this.moveService.removeFocusedUnit(this);
         }
+    }
+
+    move(direction: number) {
+       switch(direction) {
+           case 1:
+                this.y -= 40;
+                break;
+            case 2:
+                this.x += 40;
+                break;
+            case 3:
+                this.y += 40;
+                break;
+            case 4:
+                this.x -= 40;
+                break;
+       }
     }
 
     drag(event) {

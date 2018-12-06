@@ -4,17 +4,20 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MapComponent } from './pages/map/map.component';
 import { UnitComponent } from './units/unit/unit.component';
+import { KeyHander } from './events/key.handlers';
+import { MoveService } from './services/move.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    UnitComponent
+    UnitComponent,
+    KeyHander
   ],
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [MoveService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
