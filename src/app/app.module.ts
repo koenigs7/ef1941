@@ -6,13 +6,15 @@ import { MapComponent } from './pages/map/map.component';
 import { UnitComponent } from './units/unit/unit.component';
 import { KeyHander } from './events/key.handlers';
 import { MoveService } from './services/move.service';
+import { ArrowComponent } from './units/arrow/arrow.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     UnitComponent,
-    KeyHander
+    KeyHander,
+    ArrowComponent
   ],
   imports: [
     BrowserModule
