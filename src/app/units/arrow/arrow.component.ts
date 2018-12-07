@@ -11,7 +11,9 @@ export class ArrowComponent implements OnInit {
     @Input() mode: string;
 
     public x;
+    startX;
     public y;
+    startY
     public z = -1;
     private angle = null;
     private moving = false;
@@ -28,15 +30,15 @@ export class ArrowComponent implements OnInit {
                     this.move(direction);
                 } else {
                     if ( this.moves.length > 1 ) {
-                        this.moves.forEach(direction => this.move(direction));
+                        this.replay();
                     }
                 }
             }
         });
         this.moveService.focused.subscribe(xy => {
             if (xy) {
-                this.x = xy[0];
-                this.y = xy[1];
+                this.startX = this.x = xy[0];
+                this.startY = this.y = xy[1];
             } else {
                 this.x = 13;
                 this.y = 13;
@@ -46,6 +48,14 @@ export class ArrowComponent implements OnInit {
  
         this.x = 13;
         this.y = 13;
+    }
+
+    async replay() {
+        for ( let i = 0 ; i < this.moves.length ; i++ ) {
+            await this.move(this.moves[i]);
+        } 
+        this.x = this.startX;
+        this.y = this.startY;
     }
 
 
