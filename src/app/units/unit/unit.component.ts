@@ -12,11 +12,15 @@ export class UnitComponent implements OnInit {
     public x = 53;
     public y = 53;
     public selected = false;
+    private moves:number[] = [];
 
     constructor(private moveService: MoveService) { }
  
 
     ngOnInit() {
+        this.moveService.movement.subscribe( direction =>{
+            this.moves.push(direction);
+        });
     }
 
     clicked(event) {

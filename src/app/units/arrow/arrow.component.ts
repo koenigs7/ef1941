@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MoveService } from 'src/app/services/move.service';
 
 @Component({
@@ -8,12 +8,14 @@ import { MoveService } from 'src/app/services/move.service';
 })
 export class ArrowComponent implements OnInit {
 
+    @Input() mode: string;
 
     public x;
     public y;
     public z = -1;
     private angle = null;
     private moving = false;
+    private moves:number[] = [];
 
     constructor(private moveService: MoveService) { }
 
@@ -21,7 +23,14 @@ export class ArrowComponent implements OnInit {
         this.moveService.movement.subscribe(direction => {
             if (direction) {
                 console.log('arrow move ' + direction);
-                this.move(direction);
+                this.moves.push(direction);
+                if ( this.mode === "Normal") {
+                    this.move(direction);
+                } else {
+                    if ( this.moves.length > 1 ) {
+                        this.moves.forEach(direction => this.move(direction));
+                    }
+                }
             }
         });
         this.moveService.focused.subscribe(xy => {
