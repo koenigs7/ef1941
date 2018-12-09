@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MoveService } from 'src/app/services/move.service';
 import { BehaviorSubject } from 'rxjs';
 import { CombatService } from 'src/app/services/combat.service';
@@ -16,8 +16,10 @@ export enum UnitType {
 })
 export class UnitComponent implements OnInit {
 
-    public x;
-    public y;
+    @Input() x: number;
+    @Input() y: number;
+    @Input() name: string;
+
     public screenX;
     public screenY;
     public selected = false;
@@ -27,16 +29,29 @@ export class UnitComponent implements OnInit {
 
     constructor(private moveService: MoveService, private combatService: CombatService) {
         combatService.addUnit(this);
-        this.setXY(10,10);
     }
 
 
     ngOnInit() {
-        this.moveService.movement.subscribe(direction => {
-            if (direction) {
+        this.x = +this.x;
+        this.y = +this.y;
+        this.setXY(this.x, this.y);
+        this.moveService.orders.subscribe(direction => {
+            if (direction && this.selected ) {
                 this.orders.push(direction);
             }
         });
+        this.moveService.focused.subscribe(unit => {
+            if ( this === unit ) {
+                this.screenX -= 2;
+                this.screenY -= 2;
+                this.selected = true;
+            } else if ( this.selected === true ) {
+                this.screenX += 2;
+                this.screenY += 2;
+                this.selected = false;
+            }
+        })
     }
 
     public setXY(x: number, y: number) {
@@ -44,20 +59,11 @@ export class UnitComponent implements OnInit {
         this.y = y;
         this.screenX = this.x * 40 + 13;
         this.screenY = this.y * 40 + 13;
-        console.log('setting xy to '+x+','+y);
+        console.log('setting xy to ' + x + ',' + y);
     }
 
     clicked(event) {
-        this.selected = !this.selected;
-        if (this.selected) {
-            this.moveService.setFocusedUnit(this, this.x, this.y);
-            this.screenX -= 2;
-            this.screenY -= 2;
-        } else {
-            this.screenX += 2;
-            this.screenY += 2;
-            this.moveService.removeFocusedUnit(this);
-        }
+        this.moveService.setFocusedUnit(this); 
     }
 
     moveByOrders() {
@@ -66,22 +72,22 @@ export class UnitComponent implements OnInit {
     }
 
     move(direction: number) {
-        console.log('moving '+direction);
+        console.log('moving ' + direction);
         switch (direction) {
             case 1:
-                this.y -= 1;
+                this.y -= +1;
                 break;
             case 2:
-                this.x += 1;
+                this.x += +1;
                 break;
             case 3:
-                this.y += 1;
+                this.y += +1;
                 break;
             case 4:
-                this.x -=1 ;
+                this.x -= +1;
                 break;
         }
-        this.setXY(this.x,this.y);
+        this.setXY(this.x, this.y);
     }
 
 

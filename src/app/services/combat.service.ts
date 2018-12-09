@@ -34,7 +34,7 @@ export class CombatService {
         });
 
 
-        for ( let turn = 0 ; turn < this.SUBTURNS ; turn++ ) {
+        for ( let turn = 1 ; turn <= this.SUBTURNS ; turn++ ) {
             this.units.forEach(unit => {
                 if ( unit.turnToMove === turn ) {
                     console.log('moving on turn '+turn);

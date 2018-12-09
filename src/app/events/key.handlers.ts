@@ -14,7 +14,7 @@ export class KeyHander {
     onKeyDown(ev: KeyboardEvent) {
         // do something meaningful with it
         console.log(`The user just pressed ${ev.key}!`);
-        this.moveService.moveFocusedUnit(ev);
+        this.moveService.addOrder(ev);
         if ( ev.keyCode === 83) {
             this.combatService.startCombat();
         }

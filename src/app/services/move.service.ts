@@ -7,24 +7,27 @@ import { BehaviorSubject } from 'rxjs';
 export class MoveService {
 
     focusedUnit: UnitComponent;
-    public movement: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-    public focused: BehaviorSubject<number[]> = new BehaviorSubject(null);
+    public orders: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    public focused: BehaviorSubject<UnitComponent> = new BehaviorSubject(null);
 
-    setFocusedUnit(unit: UnitComponent,x: number,y: number) {
-        this.focusedUnit = unit;
-        this.focused.next([unit.x,unit.y]);
+    setFocusedUnit(unit: UnitComponent) { 
+        if ( unit != this.focusedUnit ) {
+            this.focusedUnit = unit;
+            this.focused.next(unit);
+        }
     }
+
     removeFocusedUnit(unit: UnitComponent) {
         this.focusedUnit = null;
         this.focused.next(null);
     }
 
-    moveFocusedUnit(ev: KeyboardEvent) {
+    addOrder(ev: KeyboardEvent) {
         console.log(ev);
         if ( this.focusedUnit && ev.keyCode >= 37 && ev.keyCode <= 41 ) {
             let direction = ev.keyCode - 37;
             if ( direction == 0 ) direction  = 4;
-            this.movement.next(direction);
+            this.orders.next(direction);
             ev.preventDefault();
         }
     }

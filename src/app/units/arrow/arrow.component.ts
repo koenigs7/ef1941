@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MoveService } from 'src/app/services/move.service';
+import { BehaviorSubject } from 'rxjs';
+import { UnitComponent } from '../unit/unit.component';
 
 @Component({
     selector: 'app-arrow',
@@ -10,37 +12,43 @@ export class ArrowComponent implements OnInit {
 
     @Input() mode: string;
 
+    moveAnimation: BehaviorSubject<number> = new BehaviorSubject(0);
+
     public x;
     startX;
     public y;
     startY
     public z = -1;
-    private angle = null;
-    private moving = false;
+    private angle = null; 
     private moves: number[] = [];
 
     constructor(private moveService: MoveService) { }
 
     ngOnInit() {
-        this.moveService.movement.subscribe(direction => {
+        this.moveService.orders.subscribe(direction => {
             if (direction) {
                 console.log('arrow move ' + direction);
-                this.moves.push(direction);
-                if (this.mode === "Normal") {
-                    this.move(direction);
-                } else {
+                this.moveAnimation.next(direction);
+                // if (this.mode === "Normal") {
+                //     this.move(direction);
+                // } else {
                     // if (this.moves.length > 1) {
                     //     this.x = this.startX;
                     //     this.y = this.startY;
                     //     this.replay();
                     // }
-                }
+               // }
             }
         });
-        this.moveService.focused.subscribe(xy => {
-            if (xy) {
-                this.startX = this.x = xy[0] * 40 + 13;
-                this.startY = this.y = xy[1] * 40 + 13;
+        this.moveAnimation.subscribe(direction => {
+            this.move(direction);
+        });
+
+
+        this.moveService.focused.subscribe((unit:UnitComponent ) => {
+            if (unit) {
+                this.startX = this.x = unit.x * 40 + 13;
+                this.startY = this.y = unit.y * 40 + 13;
             } else {
                 this.x = 13;
                 this.y = 13;
@@ -60,12 +68,10 @@ export class ArrowComponent implements OnInit {
     }
 
 
-    async move(direction: number) {
-        if (this.moving) return;
-        this.moving = true;
+    async move(direction: number) {  
         this.z = 4;
         for (let i = 0; i < 40; i++) {
-            await new Promise((resolve, reject) => setTimeout(resolve, 10));
+            await new Promise((resolve, reject) => setTimeout(resolve, 4));
             switch (direction) {
                 case 1:
                     this.y--;
@@ -84,8 +90,7 @@ export class ArrowComponent implements OnInit {
                     this.angle = 180;
                     break;
             }
-        }
-        this.moving = false;
+        } 
     }
 
 
