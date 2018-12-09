@@ -21,7 +21,7 @@ export class MoveService {
 
     moveFocusedUnit(ev: KeyboardEvent) {
         console.log(ev);
-        if ( this.focusedUnit ) {
+        if ( this.focusedUnit && ev.keyCode >= 37 && ev.keyCode <= 41 ) {
             let direction = ev.keyCode - 37;
             if ( direction == 0 ) direction  = 4;
             this.movement.next(direction);

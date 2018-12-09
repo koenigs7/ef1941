@@ -17,7 +17,7 @@ export class ArrowComponent implements OnInit {
     public z = -1;
     private angle = null;
     private moving = false;
-    private moves:number[] = [];
+    private moves: number[] = [];
 
     constructor(private moveService: MoveService) { }
 
@@ -26,41 +26,42 @@ export class ArrowComponent implements OnInit {
             if (direction) {
                 console.log('arrow move ' + direction);
                 this.moves.push(direction);
-                if ( this.mode === "Normal") {
+                if (this.mode === "Normal") {
                     this.move(direction);
                 } else {
-                    if ( this.moves.length > 1 ) {
-                        this.replay();
-                    }
+                    // if (this.moves.length > 1) {
+                    //     this.x = this.startX;
+                    //     this.y = this.startY;
+                    //     this.replay();
+                    // }
                 }
             }
         });
         this.moveService.focused.subscribe(xy => {
             if (xy) {
-                this.startX = this.x = xy[0];
-                this.startY = this.y = xy[1];
+                this.startX = this.x = xy[0] * 40 + 13;
+                this.startY = this.y = xy[1] * 40 + 13;
             } else {
                 this.x = 13;
                 this.y = 13;
                 this.z = -1;
             }
         });
- 
+
         this.x = 13;
         this.y = 13;
     }
 
     async replay() {
-        for ( let i = 0 ; i < this.moves.length ; i++ ) {
+        for (let i = 0; i < this.moves.length; i++) {
             await this.move(this.moves[i]);
-        } 
-        this.x = this.startX;
-        this.y = this.startY;
+        }
+
     }
 
 
     async move(direction: number) {
-        if ( this.moving ) return;
+        if (this.moving) return;
         this.moving = true;
         this.z = 4;
         for (let i = 0; i < 40; i++) {

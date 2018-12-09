@@ -7,6 +7,7 @@ import { UnitComponent } from './units/unit/unit.component';
 import { KeyHander } from './events/key.handlers';
 import { MoveService } from './services/move.service';
 import { ArrowComponent } from './units/arrow/arrow.component';
+import { CombatService } from './services/combat.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { ArrowComponent } from './units/arrow/arrow.component';
   imports: [
     BrowserModule
   ],
-  providers: [MoveService],
+  providers: [MoveService,CombatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
