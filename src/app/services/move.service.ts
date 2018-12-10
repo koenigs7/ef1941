@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { UnitComponent } from '../units/unit/unit.component';
-import { directiveDef } from '@angular/core/src/view';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class OrderService {
         if ( unit === this.focusedUnit ) {
             this.removeFocusedUnit();
         }
-        if ( unit != this.focusedUnit ) {
+        else if ( unit !== this.focusedUnit ) {
             this.focusedUnit = unit;
             this.focused.next(unit);
         }

@@ -2,8 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { OrderService } from 'src/app/services/move.service';
 import { BehaviorSubject } from 'rxjs';
 import { CombatService } from 'src/app/services/combat.service';
-import { MapService } from 'src/app/services/map.service';
-
+import { MapService } from 'src/app/services/map.service'; 
 
 export enum UnitType {
     ARMOR,
@@ -43,7 +42,7 @@ export class UnitComponent implements OnInit {
             }
         });
         this.moveService.focused.subscribe(unit => {
-            if ( this === unit ) {
+            if ( this === unit && !this.selected ) {
                 this.screenX -= 2;
                 this.screenY -= 2;
                 this.selected = true;
