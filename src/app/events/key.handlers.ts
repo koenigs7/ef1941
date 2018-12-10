@@ -1,5 +1,5 @@
 import { HostListener, Component } from '@angular/core';
-import { MoveService } from '../services/move.service';
+import { OrderService } from '../services/move.service';
 import { CombatService } from '../services/combat.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { CombatService } from '../services/combat.service';
 })
 export class KeyHander {
 
-    constructor(private moveService: MoveService, private combatService: CombatService) { }
+    constructor(private moveService: OrderService, private combatService: CombatService) { }
 
     @HostListener('body:keydown', ['$event'])
     onKeyDown(ev: KeyboardEvent) {
@@ -17,6 +17,7 @@ export class KeyHander {
         this.moveService.addOrder(ev);
         if ( ev.keyCode === 83) {
             this.combatService.startCombat();
+            this.moveService.removeFocusedUnit();
         }
     }
  

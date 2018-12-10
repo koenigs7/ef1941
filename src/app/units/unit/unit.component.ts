@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MoveService } from 'src/app/services/move.service';
+import { OrderService } from 'src/app/services/move.service';
 import { BehaviorSubject } from 'rxjs';
 import { CombatService } from 'src/app/services/combat.service';
+import { MapService } from 'src/app/services/map.service';
 
 
 export enum UnitType {
@@ -27,7 +28,7 @@ export class UnitComponent implements OnInit {
     public turnToMove = 0;
     public type: UnitType = UnitType.ARMOR;
 
-    constructor(private moveService: MoveService, private combatService: CombatService) {
+    constructor(private moveService: OrderService, private combatService: CombatService, private mapService: MapService) {
         combatService.addUnit(this);
     }
 
@@ -63,10 +64,12 @@ export class UnitComponent implements OnInit {
     }
 
     clicked(event) {
+        console.log(this.mapService.getTerrainAt(this.x,this.y));
         this.moveService.setFocusedUnit(this); 
     }
 
     moveByOrders() {
+        console.log("moving "+this.name+" to "+this.orders[0]);
         this.move(this.orders.shift());
         return this.orders[0];
     }

@@ -5,9 +5,10 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './pages/map/map.component';
 import { UnitComponent } from './units/unit/unit.component';
 import { KeyHander } from './events/key.handlers';
-import { MoveService } from './services/move.service';
+import { OrderService } from './services/move.service';
 import { ArrowComponent } from './units/arrow/arrow.component';
 import { CombatService } from './services/combat.service';
+import { MapService } from './services/map.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { CombatService } from './services/combat.service';
   imports: [
     BrowserModule
   ],
-  providers: [MoveService,CombatService],
+  providers: [OrderService,CombatService,MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

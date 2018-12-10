@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MoveService } from 'src/app/services/move.service';
+import { OrderService } from 'src/app/services/move.service';
 import { BehaviorSubject } from 'rxjs';
 import { UnitComponent } from '../unit/unit.component';
 
@@ -22,7 +22,7 @@ export class ArrowComponent implements OnInit {
     private angle = null; 
     private moves: number[] = [];
 
-    constructor(private moveService: MoveService) { }
+    constructor(private moveService: OrderService) { }
 
     ngOnInit() {
         this.moveService.orders.subscribe(direction => {

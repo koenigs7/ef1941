@@ -1,8 +1,12 @@
 import { UnitComponent } from '../units/unit/unit.component';
+import { MapService } from './map.service';
+import { Injectable } from '@angular/core';
 
 
-
+@Injectable()
 export class CombatService {
+
+    constructor(private mapService: MapService) {}
 
     private SUBTURNS = 32;
     private combatInProgress = false;
@@ -27,7 +31,8 @@ export class CombatService {
             console.log(unit.orders);
             const move = unit.orders[0];
             if ( move ) {
-                unit.turnToMove = 4;
+                unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
+                console.log(unit.name + " will move on turn "+unit.turnToMove+" to "+JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
             } else {
                 unit.turnToMove = this.SUBTURNS+1;
             }
@@ -37,15 +42,17 @@ export class CombatService {
         for ( let turn = 1 ; turn <= this.SUBTURNS ; turn++ ) {
             this.units.forEach(unit => {
                 if ( unit.turnToMove === turn ) {
-                    console.log('moving on turn '+turn);
-                    const nextMove = unit.moveByOrders();
-                    if ( nextMove ) {
-                        unit.turnToMove = turn + 4;
+                    const move = unit.moveByOrders();
+                    if ( move ) {
+                        unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
+                        console.log(unit.name + " moving on turn "+unit.turnToMove+" to "+JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
+                    } else {
+                        console.log(unit.name+" out of orders");
                     }
                 }
             });
             await new Promise((resolve, reject) => setTimeout(resolve, 200));
-
+            console.log(turn);
 
         }
         this.combatInProgress = false;

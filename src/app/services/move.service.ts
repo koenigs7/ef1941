@@ -4,20 +4,23 @@ import { directiveDef } from '@angular/core/src/view';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
-export class MoveService {
+export class OrderService {
 
     focusedUnit: UnitComponent;
     public orders: BehaviorSubject<number> = new BehaviorSubject<number>(null);
     public focused: BehaviorSubject<UnitComponent> = new BehaviorSubject(null);
 
     setFocusedUnit(unit: UnitComponent) { 
+        if ( unit === this.focusedUnit ) {
+            this.removeFocusedUnit();
+        }
         if ( unit != this.focusedUnit ) {
             this.focusedUnit = unit;
             this.focused.next(unit);
         }
     }
 
-    removeFocusedUnit(unit: UnitComponent) {
+    removeFocusedUnit() {
         this.focusedUnit = null;
         this.focused.next(null);
     }
