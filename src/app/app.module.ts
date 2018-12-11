@@ -9,6 +9,7 @@ import { OrderService } from './services/move.service';
 import { ArrowComponent } from './units/arrow/arrow.component';
 import { CombatService } from './services/combat.service';
 import { MapService } from './services/map.service';
+import { UnitService } from './services/unit.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { MapService } from './services/map.service';
   imports: [
     BrowserModule
   ],
-  providers: [OrderService,CombatService,MapService],
+  providers: [OrderService,CombatService,MapService,UnitService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

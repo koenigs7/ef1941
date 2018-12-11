@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { UnitComponent } from '../units/unit/unit.component';
 import { BehaviorSubject } from 'rxjs';
+import { Direction } from '../model/direction';
 
 @Injectable()
 export class OrderService {
 
     focusedUnit: UnitComponent;
-    public orders: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+    public orders: BehaviorSubject<Direction> = new BehaviorSubject<Direction>(null);
     public focused: BehaviorSubject<UnitComponent> = new BehaviorSubject(null);
 
     setFocusedUnit(unit: UnitComponent) { 
@@ -28,7 +29,7 @@ export class OrderService {
         console.log(ev);
         if ( this.focusedUnit && ev.keyCode >= 37 && ev.keyCode <= 41 ) {
             let direction = ev.keyCode - 37;
-            if ( direction == 0 ) direction  = 4;
+            if ( direction == Direction.NONE ) direction  = Direction.WEST;
             this.orders.next(direction);
             ev.preventDefault();
         }
