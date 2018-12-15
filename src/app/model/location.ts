@@ -3,6 +3,8 @@ import { Direction } from './direction';
 
 export class Location {
 
+    static DEAD = new Location(-1,-1);
+
     constructor(public x:number, public y:number) { }
 
     toString() {
@@ -39,7 +41,7 @@ export class Location {
     }
 
     changeBy(direction:Direction): void {
-        let newLocation = this.offsetBy(direction);
+        const newLocation = this.offsetBy(direction);
         this.x = newLocation.x;
         this.y = newLocation.y;
     }

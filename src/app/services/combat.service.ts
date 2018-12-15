@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent } from '../units/unit/unit.component';
+import { UnitComponent, CombatLossType } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 
 @Injectable()
@@ -14,9 +14,15 @@ export class CombatService {
         if ( multipler === 3 ) defenderStrength *= 2 % 255;
         if ( defender.orders.length ) defenderStrength /=2 ;
 
-        if ( this.getRandom() < attacker.combatStrength ) {
-            defender.musterStrength -= 1;
-            defender.combatStrength -= 5;
+        if ( this.getRandom() > attacker.combatStrength ) {
+            return;
+        }
+        if (defender.takeLossAndCheckForDead(CombatLossType.STANDARD)) {
+            console.log(defender.name+' died');
+            return;
+        }
+        if ( defender.isBroken()) {
+            console.log('defender must retreat');
         }
 
     }

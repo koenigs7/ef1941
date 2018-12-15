@@ -10,12 +10,24 @@ import { Terrain } from 'src/app/model/terrain';
 export enum Nationality {
     GERMAN = 'G',
     RUSSIAN = 'R',
-    FINNISH= 'F'
+    FINNISH = 'F'
 }
 
 export enum UnitType {
     ARMOR,
     INFANTRY
+}
+
+export enum CombatLossType {
+    STANDARD = 1,
+    RETREAT = 2,
+    NORETREAT = 3
+}
+
+export enum UnitState {
+    ACTIVE,
+    DEAD,
+    WAITING
 }
 
 @Component({
@@ -49,7 +61,7 @@ export class UnitComponent implements OnInit {
 
     ngOnInit() {
         this.combatStrength = this.musterStrength;
-        this.setLocation(new Location(+this.x,+this.y));
+        this.setLocation(new Location(+this.x, +this.y));
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
                 this.orders.push(direction);
@@ -78,8 +90,8 @@ export class UnitComponent implements OnInit {
         console.log('setting location to ' + location);
     }
 
-    public getLocation(): Location { 
-        return new Location(this.x,this.y);
+    public getLocation(): Location {
+        return new Location(this.x, this.y);
     }
 
     getTerrain(): Terrain {
@@ -91,7 +103,7 @@ export class UnitComponent implements OnInit {
     }
 
     moveByOrders(): Direction {
-        if ( this.orders[0]) {
+        if (this.orders[0]) {
             console.log('moving ' + this.name + ' to ' + this.orders[0]);
             this.move(this.orders.shift());
             return this.orders[0];
@@ -106,6 +118,28 @@ export class UnitComponent implements OnInit {
 
     move(direction: Direction) {
         this.setLocation(this.getLocation().ifMovedTo([direction]));
+    }
+
+    isBroken(): boolean {
+        if (this.nationality === Nationality.GERMAN || this.nationality === Nationality.FINNISH) {
+            return this.combatStrength * 2 < this.musterStrength;
+        } else {
+            return this.combatStrength * 8 < this.musterStrength * 7;
+        }
+    }
+
+
+    takeLossAndCheckForDead(lossType: CombatLossType): UnitState {
+        this.musterStrength -= lossType;
+        this.combatStrength -= lossType * 5;
+        if (this.combatStrength < 20) {
+            this.z = -1;
+            this.orders = [];
+            this.setLocation(Location.DEAD);
+            return UnitState.DEAD;
+        } else {
+            return UnitState.ACTIVE;
+        }
     }
 
 }

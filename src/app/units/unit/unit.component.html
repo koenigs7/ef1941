@@ -1,10 +1,10 @@
-<td (click)=clicked($event) class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px' ,  'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
+<div (click)=clicked($event) 
+    class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px' ,  'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
     <img style="vertical-align: top;" src="assets/images/units/gtank.jpg">
     <div class="tooltip">
         <div>{{combatStrength}}/{{musterStrength}}</div>
-
         <div>
             [{{x}},{{y}}]
         </div>
     </div>
-</td>
+</div>
