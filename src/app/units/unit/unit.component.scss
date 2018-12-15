@@ -7,3 +7,19 @@ img {
     height: 40px;
     width: 40px;
 }
+
+.tooltip {
+    visibility: hidden;
+    top: 60px;
+    border-radius: 5px;
+    z-index: 99;
+    position: absolute;
+    background-color: wheat;
+    padding: 5px;
+}
+
+.unit:hover .tooltip {
+    visibility: visible;
+    z-index: 100;
+  }
+
