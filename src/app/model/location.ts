@@ -1,18 +1,19 @@
 import { Direction } from './direction';
+import { Direct } from 'protractor/built/driverProviders';
 
 
 export class Location {
 
-    static DEAD = new Location(-1,-1);
+    static DEAD = new Location(-1, -1);
 
-    constructor(public x:number, public y:number) { }
+    constructor(public x: number, public y: number) { }
 
     toString() {
-        return '['+this.x+','+this.y+']';
+        return '[' + this.x + ',' + this.y + ']';
     }
 
     ifMovedTo(directions: Direction[]): Location {
-        let newLocation = new Location(this.x,this.y);
+        let newLocation = new Location(this.x, this.y);
         directions.forEach(direction => {
             newLocation = newLocation.offsetBy(direction);
         });
@@ -37,10 +38,10 @@ export class Location {
                 x -= +1;
                 break;
         }
-        return new Location(x,y);
+        return new Location(x, y);
     }
 
-    changeBy(direction:Direction): void {
+    changeBy(direction: Direction): void {
         const newLocation = this.offsetBy(direction);
         this.x = newLocation.x;
         this.y = newLocation.y;

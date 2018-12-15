@@ -53,13 +53,14 @@ export class UnitComponent implements OnInit {
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType = UnitType.ARMOR;
+    public state:UnitState = UnitState.ACTIVE;
 
     constructor(private moveService: OrderService, private combatService: TurnService, private mapService: MapService, private unitService: UnitService) {
         this.unitService.addUnit(this);
     }
 
 
-    ngOnInit() {
+    ngOnInit() { 
         this.combatStrength = this.musterStrength;
         this.setLocation(new Location(+this.x, +this.y));
         this.moveService.orders.subscribe(direction => {
@@ -128,15 +129,22 @@ export class UnitComponent implements OnInit {
         }
     }
 
+    changeState(newState:UnitState): UnitState {
+        this.state = newState;
+        if ( newState === UnitState.DEAD ) {
+            this.z = -1;
+            this.orders = [];
+            this.setLocation(Location.DEAD);
+            return UnitState.DEAD;
+        }
+    }
+
 
     takeLossAndCheckForDead(lossType: CombatLossType): UnitState {
         this.musterStrength -= lossType;
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 20) {
-            this.z = -1;
-            this.orders = [];
-            this.setLocation(Location.DEAD);
-            return UnitState.DEAD;
+            return this.changeState(UnitState.DEAD); 
         } else {
             return UnitState.ACTIVE;
         }

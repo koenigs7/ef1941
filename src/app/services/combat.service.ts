@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UnitComponent, CombatLossType } from '../units/unit/unit.component';
 import { MapService } from './map.service';
+import { UnitService } from './unit.service';
 
 @Injectable()
 export class CombatService {
 
-    constructor(private mapService: MapService) {}
+    constructor(private mapService: MapService, private unitService: UnitService) {}
     
     resolve(attacker: UnitComponent, defender: UnitComponent): any {
         let defenderStrength = defender.combatStrength;
@@ -23,6 +24,8 @@ export class CombatService {
         }
         if ( defender.isBroken()) {
             console.log('defender must retreat');
+            const map = this.unitService.createZOCmap(attacker.nationality);
+            console.log(map);
         }
 
     }
