@@ -16,8 +16,8 @@ export class KeyHander {
         console.log(`The user just pressed ${ev.key}!`);
         this.moveService.addOrder(ev);
         if ( ev.keyCode === 83) {
-            this.combatService.startCombat();
             this.moveService.removeFocusedUnit();
+            this.combatService.startCombat();
         }
     }
  

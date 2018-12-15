@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { UnitComponent } from '../units/unit/unit.component';
+import { Location } from '../model/location';
 
 
 @Injectable()
@@ -16,8 +17,8 @@ export class UnitService {
     }
 
 
-    unitAt(x,y): UnitComponent {
-        return this.units.find(unit => unit.x === x && unit.y === y );
+    unitAt(location: Location): UnitComponent {
+        return this.units.find(unit => unit.x === location.x && unit.y === location.y );
     }
 
 

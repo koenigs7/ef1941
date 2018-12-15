@@ -36,9 +36,9 @@ export class CombatService {
                 if ( unit.turnToMove === turn ) {
                     const move = unit.nextOrder();
                     if ( move ) { 
-                        let xy = unit.calculatePositionUsingOrders([move]); 
-                        if ( this.unitService.unitAt(xy[0],xy[1] )) {
-                            console.log(xy + " is occupied");
+                        let location = unit.calculatePositionUsingOrders([move]); 
+                        if ( this.unitService.unitAt(location )) {
+                            console.log(location + " is occupied");
                              unit.turnToMove += 2; 
                         } else {
                             unit.moveByOrders();

@@ -5,6 +5,13 @@ import { CombatService } from 'src/app/services/combat.service';
 import { MapService } from 'src/app/services/map.service';
 import { UnitService } from 'src/app/services/unit.service';
 import { Direction } from 'src/app/model/direction';
+import { Location } from 'src/app/model/location';
+
+export enum Nationality {
+    GERMAN = "G",
+    RUSSIAN = "R",
+    FINNISH= "F"
+}
 
 export enum UnitType {
     ARMOR,
@@ -79,7 +86,7 @@ export class UnitComponent implements OnInit {
         return this.orders[0];
     }
 
-    calculatePositionUsingOrders(orders: Direction[]): number[] {
+    calculatePositionUsingOrders(orders: Direction[]): Location {
         let x = this.x;
         let y = this.y;
         orders.forEach(order => {
@@ -98,7 +105,7 @@ export class UnitComponent implements OnInit {
                     break;
             }
         });
-        return [x, y];
+        return new Location(x,y);
     }
 
     move(direction: number) {

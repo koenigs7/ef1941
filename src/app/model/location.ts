@@ -1,6 +1,6 @@
 
 
 export class Location {
-    public x;
-    public y;
+
+    constructor(public x,public y) {} 
 }
