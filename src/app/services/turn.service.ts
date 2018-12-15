@@ -2,12 +2,13 @@ import { UnitComponent } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
+import { CombatService } from './combat.service';
 
 
 @Injectable()
 export class TurnService {
 
-    constructor(private mapService: MapService, private unitService: UnitService) {}
+    constructor(private mapService: MapService, private unitService: UnitService,private combatService:CombatService) {}
 
     private SUBTURNS = 32;
     private combatInProgress = false;
@@ -44,6 +45,8 @@ export class TurnService {
                                  unit.turnToMove += 2; 
                             } else  {
                                 console.log('Combat');
+                                this.combatService.resolve(unit,unitInWay);
+                                unit.turnToMove += 1;
                             }
                         } else {
                             unit.moveByOrders();

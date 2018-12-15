@@ -10,6 +10,7 @@ import { ArrowComponent } from './units/arrow/arrow.component';
 import { TurnService } from './services/turn.service';
 import { MapService } from './services/map.service';
 import { UnitService } from './services/unit.service';
+import { CombatService } from './services/combat.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { UnitService } from './services/unit.service';
   imports: [
     BrowserModule
   ],
-  providers: [OrderService,TurnService,MapService,UnitService],
+  providers: [OrderService,TurnService,MapService,UnitService,CombatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

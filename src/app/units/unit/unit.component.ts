@@ -5,11 +5,12 @@ import { MapService } from 'src/app/services/map.service';
 import { UnitService } from 'src/app/services/unit.service';
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
+import { Terrain } from 'src/app/model/terrain';
 
 export enum Nationality {
-    GERMAN = "G",
-    RUSSIAN = "R",
-    FINNISH= "F"
+    GERMAN = 'G',
+    RUSSIAN = 'R',
+    FINNISH= 'F'
 }
 
 export enum UnitType {
@@ -24,7 +25,7 @@ export enum UnitType {
 })
 export class UnitComponent implements OnInit {
 
-    static SELECTED_BORDER_WIDTH=5;
+    static SELECTED_BORDER_WIDTH = 5;
 
     @Input() x: number;
     @Input() y: number;
@@ -66,7 +67,7 @@ export class UnitComponent implements OnInit {
                 this.z = 2;
                 this.selected = false;
             }
-        })
+        });
     }
 
     public setLocation(location: Location) {
@@ -81,17 +82,20 @@ export class UnitComponent implements OnInit {
         return new Location(this.x,this.y);
     }
 
+    getTerrain(): Terrain {
+        return this.mapService.getTerrainAt(this.x, this.y);
+    }
+
     clicked(event) {
         this.moveService.setFocusedUnit(this);
     }
 
     moveByOrders(): Direction {
         if ( this.orders[0]) {
-            console.log("moving " + this.name + " to " + this.orders[0]);
+            console.log('moving ' + this.name + ' to ' + this.orders[0]);
             this.move(this.orders.shift());
             return this.orders[0];
-        }
-        else {
+        } else {
             return Direction.NONE;
         }
     }
