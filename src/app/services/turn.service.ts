@@ -5,7 +5,7 @@ import { UnitService } from './unit.service';
 
 
 @Injectable()
-export class CombatService {
+export class TurnService {
 
     constructor(private mapService: MapService, private unitService: UnitService) {}
 
@@ -36,10 +36,15 @@ export class CombatService {
                 if ( unit.turnToMove === turn ) {
                     const move = unit.nextOrder();
                     if ( move ) { 
-                        let location = unit.calculatePositionUsingOrders([move]); 
-                        if ( this.unitService.unitAt(location )) {
-                            console.log(location + " is occupied");
-                             unit.turnToMove += 2; 
+                        let location = unit.getLocation().ifMovedTo([move]); 
+                        let unitInWay = this.unitService.unitAt(location);
+                        if ( unitInWay  ) {
+                            if ( unitInWay.nationality = unit.nationality ) {
+                                console.log(location + " is occupied by friendly");
+                                 unit.turnToMove += 2; 
+                            } else  {
+                                console.log("Combat");
+                            }
                         } else {
                             unit.moveByOrders();
                             unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;

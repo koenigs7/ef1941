@@ -1,6 +1,6 @@
 import { HostListener, Component } from '@angular/core';
 import { OrderService } from '../services/move.service';
-import { CombatService } from '../services/combat.service';
+import { TurnService } from '../services/turn.service';
 
 @Component({
     selector: 'app-event',
@@ -8,7 +8,7 @@ import { CombatService } from '../services/combat.service';
 })
 export class KeyHander {
 
-    constructor(private moveService: OrderService, private combatService: CombatService) { }
+    constructor(private moveService: OrderService, private combatService: TurnService) { }
 
     @HostListener('body:keydown', ['$event'])
     onKeyDown(ev: KeyboardEvent) {
