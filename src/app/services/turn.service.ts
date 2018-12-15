@@ -22,9 +22,9 @@ export class TurnService {
             console.log(unit.orders);
             const move = unit.orders[0];
             if ( move ) {
-                
                     unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
-                    console.log(unit.name + " will move on turn "+unit.turnToMove+" to "+JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move))); 
+                    console.log(unit.name + ' will move on turn ' + unit.turnToMove+' to '+
+                        JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move))); 
             } else {
                 unit.turnToMove = this.SUBTURNS+1;
             }
@@ -36,22 +36,23 @@ export class TurnService {
                 if ( unit.turnToMove === turn ) {
                     const move = unit.nextOrder();
                     if ( move ) { 
-                        let location = unit.getLocation().ifMovedTo([move]); 
-                        let unitInWay = this.unitService.unitAt(location);
+                        const location = unit.getLocation().ifMovedTo([move]); 
+                        const unitInWay = this.unitService.unitAt(location);
                         if ( unitInWay  ) {
-                            if ( unitInWay.nationality = unit.nationality ) {
-                                console.log(location + " is occupied by friendly");
+                            if ( unitInWay.nationality === unit.nationality ) {
+                                console.log(location + ' is occupied by friendly');
                                  unit.turnToMove += 2; 
                             } else  {
-                                console.log("Combat");
+                                console.log('Combat');
                             }
                         } else {
                             unit.moveByOrders();
                             unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
-                            console.log(unit.name + " moving on turn "+unit.turnToMove+" to "+JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
+                            console.log(unit.name + ' moving on turn '+unit.turnToMove+' to '+
+                                JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
                         }
                     } else {
-                        console.log(unit.name+" out of orders");
+                        console.log(unit.name+' out of orders');
                     }
                 }
             });

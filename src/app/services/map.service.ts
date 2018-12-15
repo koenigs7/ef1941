@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Terrain } from '../model/terrain';
 import { Direction } from '../model/direction';
 
@@ -23,7 +23,7 @@ export class MapService {
         [191,191,170,190,179,173,188,159,160,165,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,151,0,0,0,0,0,0,0,0,0,0,0,0,156,153,0,0],
         [191,191,169,0,0,0,0,0,0,143,164,0,0,0,0,0,157,155,0,0,0,73,0,0,0,74,0,0,156,153,0,0,0,0,0,0,0,0,0,0,0,0,149,0,0,0],
         [191,191,171,0,0,0,0,0,0,0,144,161,166,0,0,156,154,0,0,0,0,0,3,6,0,0,0,0,152,0,0,0,0,0,0,0,0,0,0,0,0,0,147,0,0,0],
-        [191,191,175,178,0,0,0,0,0,0,0,0,145,162,163,153,0,0,0,2,151,4,1,2,158,163,161,159,155,0,0,0,0,0,0,0,0,0,0,0,0,0,150,0,0,0],   //BYTE 3800
+        [191,191,175,178,0,0,0,0,0,0,0,0,145,162,163,153,0,0,0,2,151,4,1,2,158,163,161,159,155,0,0,0,0,0,0,0,0,0,0,0,0,0,150,0,0,0],   // BYTE 3800
         [191,191,191,170,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,162,153,0,3,4,148,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,154,0,0,0],
         [191,191,177,188,160,159,161,164,0,0,0,2,6,5,0,0,157,163,154,71,0,1,6,0,147,0,0,152,0,0,0,0,0,0,0,0,0,0,0,0,0,151,74,0,0,0],
         [191,177,176,0,0,0,0,145,162,0,1,4,3,1,0,158,155,0,0,0,0,0,0,0,0,0,0,151,0,0,0,0,0,0,0,0,0,0,0,0,0,148,0,0,0,0],
@@ -47,7 +47,7 @@ export class MapService {
     
     getTerrainAt(x:number,y:number): Terrain {
         const terrainCode = this.theMap[y][x];
-        console.log("Terrain at "+x+","+y+"="+terrainCode);
+        console.log('Terrain at '+x+','+y+'='+terrainCode);
         if ( terrainCode === 0 ) {
             return Terrain.CLEAR;
         } else if ( terrainCode >= 1 && terrainCode <= 6 ) {
@@ -63,7 +63,7 @@ export class MapService {
         } else if ( terrainCode === 191 ) {
             return Terrain.SEA; 
         } else {
-            console.log("unmapped code : "+ terrainCode);
+            console.log('unmapped code : '+ terrainCode);
         }
     }
 
@@ -72,8 +72,7 @@ export class MapService {
         if ( direction === Direction.EAST ) return this.getTerrainAt(x+1,y);
         if ( direction === Direction.SOUTH ) return this.getTerrainAt(x,y+1);
         if ( direction === Direction.WEST ) return this.getTerrainAt(x-1,y);
-        console.log("bad direction "+direction);
+        console.log('bad direction '+direction);
     }
-
 
 }
