@@ -20,7 +20,7 @@ export class Terrain {
     static CITY = new Terrain(18,6,3,1);
     static SWAMP = new Terrain(18,18,2,1);
     static COAST = new Terrain(8,3,1,2);
-    static SEA = new Terrain(1,1,1,1,);
+    static SEA = new Terrain(99,99,1,1,);
 
 
 }

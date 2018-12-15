@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderService } from 'src/app/services/move.service';
-import { BehaviorSubject } from 'rxjs';
 import { CombatService } from 'src/app/services/combat.service';
 import { MapService } from 'src/app/services/map.service';
 import { UnitService } from 'src/app/services/unit.service';
@@ -25,12 +24,18 @@ export enum UnitType {
 })
 export class UnitComponent implements OnInit {
 
+    static SELECTED_BORDER_WIDTH=5;
+
     @Input() x: number;
     @Input() y: number;
     @Input() name: string;
+    @Input() nationality: Nationality;
+    @Input() musterStrength: number;
 
+    public combatStrength: number = this.musterStrength;
     public screenX;
     public screenY;
+    private z = 2;
     public selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
@@ -52,12 +57,14 @@ export class UnitComponent implements OnInit {
         });
         this.moveService.focused.subscribe(unit => {
             if (this === unit && !this.selected) {
-                this.screenX -= 2;
-                this.screenY -= 2;
+                this.screenX -= UnitComponent.SELECTED_BORDER_WIDTH;
+                this.screenY -= UnitComponent.SELECTED_BORDER_WIDTH;
+                this.z = 3;
                 this.selected = true;
             } else if (this.selected === true) {
-                this.screenX += 2;
-                this.screenY += 2;
+                this.screenX += UnitComponent.SELECTED_BORDER_WIDTH;
+                this.screenY += UnitComponent.SELECTED_BORDER_WIDTH;
+                this.z = 2;
                 this.selected = false;
             }
         })
