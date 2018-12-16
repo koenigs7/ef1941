@@ -21,7 +21,7 @@ export class Location {
     }
 
 
-    private offsetBy(direction: Direction): Location {
+    offsetBy(direction: Direction): Location {
         let x = this.x;
         let y = this.y;
         switch (direction) {
@@ -41,10 +41,5 @@ export class Location {
         return new Location(x, y);
     }
 
-    changeBy(direction: Direction): void {
-        const newLocation = this.offsetBy(direction);
-        this.x = newLocation.x;
-        this.y = newLocation.y;
-    }
 
 }

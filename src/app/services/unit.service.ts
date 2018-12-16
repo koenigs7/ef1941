@@ -25,7 +25,6 @@ export class UnitService {
     createZOCmap(nationality: Nationality) {
         const zocMap = new Map<string,number>();
         this.units.forEach(unit => {
-            console.log(unit.type);
             if ( unit.state === UnitState.ACTIVE && unit.nationality === nationality ) {
                 const loc = unit.getLocation();
                 zocMap.set(loc.toString(),1);

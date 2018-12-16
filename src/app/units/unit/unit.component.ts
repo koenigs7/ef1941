@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderService } from 'src/app/services/move.service';
-import { TurnService } from 'src/app/services/turn.service';
 import { MapService } from 'src/app/services/map.service';
 import { UnitService } from 'src/app/services/unit.service';
 import { Direction } from 'src/app/model/direction';
@@ -48,14 +47,13 @@ export class UnitComponent implements OnInit {
     public combatStrength;
     public screenX;
     public screenY;
-    private z = 2;
     public selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType = UnitType.ARMOR;
     public state:UnitState = UnitState.ACTIVE;
 
-    constructor(private moveService: OrderService, private combatService: TurnService, private mapService: MapService, private unitService: UnitService) {
+    constructor(private moveService: OrderService,  private mapService: MapService, private unitService: UnitService) {
         this.unitService.addUnit(this);
     }
 
@@ -72,12 +70,10 @@ export class UnitComponent implements OnInit {
             if (this === unit && !this.selected) {
                 this.screenX -= UnitComponent.SELECTED_BORDER_WIDTH;
                 this.screenY -= UnitComponent.SELECTED_BORDER_WIDTH;
-                this.z = 3;
                 this.selected = true;
             } else if (this.selected === true) {
                 this.screenX += UnitComponent.SELECTED_BORDER_WIDTH;
                 this.screenY += UnitComponent.SELECTED_BORDER_WIDTH;
-                this.z = 2;
                 this.selected = false;
             }
         });
@@ -99,7 +95,7 @@ export class UnitComponent implements OnInit {
         return this.mapService.getTerrainAt(this.x, this.y);
     }
 
-    clicked(event) {
+    clicked() {
         this.moveService.setFocusedUnit(this);
     }
 
@@ -118,7 +114,7 @@ export class UnitComponent implements OnInit {
     }
 
     move(direction: Direction) {
-        this.setLocation(this.getLocation().ifMovedTo([direction]));
+        this.setLocation(this.getLocation().offsetBy(direction));
     }
 
     isBroken(): boolean {
@@ -132,7 +128,6 @@ export class UnitComponent implements OnInit {
     changeState(newState:UnitState): UnitState {
         this.state = newState;
         if ( newState === UnitState.DEAD ) {
-            this.z = -1;
             this.orders = [];
             this.setLocation(Location.DEAD);
             return UnitState.DEAD;

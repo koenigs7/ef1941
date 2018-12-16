@@ -20,7 +20,6 @@ export class TurnService {
         this.combatInProgress = true;
 
         this.unitService.units.forEach((unit: UnitComponent) => {
-            console.log(unit.orders);
             const move = unit.orders[0];
             if ( move ) {
                     unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
@@ -59,7 +58,7 @@ export class TurnService {
                     }
                 }
             });
-            await new Promise((resolve, reject) => setTimeout(resolve, 200));
+            await new Promise((resolve, reject) => setTimeout(resolve, 100));
             console.log(turn);
 
         }
