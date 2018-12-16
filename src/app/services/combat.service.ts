@@ -3,7 +3,6 @@ import { UnitComponent, CombatLossType } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { UnitService } from './unit.service';
 import { Direction } from '../model/direction';
-import { Direct } from 'protractor/built/driverProviders';
 import { Terrain } from '../model/terrain';
 
 @Injectable()
@@ -44,8 +43,6 @@ export class CombatService {
                 defender.move(retreatDirection);
                 return;
             }
-            console.log('defender could not retreat '+retreatDirection);
-            console.log(zocMap);
             // try another retreat direction 
             if (defender.takeLossAndCheckForDead(CombatLossType.RETREAT)) {
                 console.log(defender.name+' died retreating new direction');
@@ -56,7 +53,6 @@ export class CombatService {
                 defender.move(retreatDirection);
                 return;
             }
-            console.log('defender could not retreat '+retreatDirection);
             // try last retreat direction 
             if (defender.takeLossAndCheckForDead(CombatLossType.RETREAT)) {
                 console.log(defender.name+' died retreating last direction');

@@ -1,5 +1,4 @@
 import { Direction } from './direction';
-import { Direct } from 'protractor/built/driverProviders';
 
 
 export class Location {
