@@ -43,6 +43,7 @@ export class UnitComponent implements OnInit {
     @Input() name: string;
     @Input() nationality: Nationality;
     @Input() musterStrength: number;
+    @Input() arrive: number;
 
     public combatStrength;
     public screenX;
@@ -60,7 +61,7 @@ export class UnitComponent implements OnInit {
 
     ngOnInit() { 
         this.combatStrength = this.musterStrength;
-        this.setLocation(new Location(+this.x, +this.y));
+        this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
                 this.orders.push(direction);
