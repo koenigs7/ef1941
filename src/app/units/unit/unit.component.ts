@@ -48,11 +48,13 @@ export class UnitComponent implements OnInit {
     public combatStrength;
     public screenX;
     public screenY;
+    public z = 2;
     public selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType = UnitType.ARMOR;
     public state:UnitState = UnitState.ACTIVE;
+    public imageSrc:string;
 
     constructor(private moveService: OrderService,  private mapService: MapService, private unitService: UnitService) {
         this.unitService.addUnit(this);
@@ -60,6 +62,7 @@ export class UnitComponent implements OnInit {
 
 
     ngOnInit() { 
+        this.imageSrc = 'assets/images/units/' + ( this.nationality === Nationality.GERMAN ? 'grey.png' : 'red.png' );
         this.combatStrength = this.musterStrength;
         this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
@@ -72,10 +75,12 @@ export class UnitComponent implements OnInit {
                 this.screenX -= UnitComponent.SELECTED_BORDER_WIDTH;
                 this.screenY -= UnitComponent.SELECTED_BORDER_WIDTH;
                 this.selected = true;
+                this.z = 4;
             } else if (this.selected === true) {
                 this.screenX += UnitComponent.SELECTED_BORDER_WIDTH;
                 this.screenY += UnitComponent.SELECTED_BORDER_WIDTH;
                 this.selected = false;
+                this.z = 2;
             }
         });
     }

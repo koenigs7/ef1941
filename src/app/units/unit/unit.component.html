@@ -1,7 +1,8 @@
 <div (click)=clicked($event) 
     class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px' ,  'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
-    <img style="vertical-align: top;" src="assets/images/units/gtank.jpg">
+    <img style="vertical-align: top;" src={{imageSrc}}>
     <div class="tooltip">
+        <div>{{name}}</div>
         <div>{{combatStrength}}/{{musterStrength}}</div>
         <div>
             [{{x}},{{y}}]

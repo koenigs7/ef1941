@@ -17,7 +17,7 @@ export class ArrowComponent implements OnInit {
     public x;
     startX;
     public y;
-    startY
+    startY;
     public z = -1;
     private angle = null; 
     private moves: number[] = [];
