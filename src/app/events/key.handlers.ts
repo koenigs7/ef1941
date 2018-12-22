@@ -13,7 +13,7 @@ export class KeyHander {
     @HostListener('body:keydown', ['$event'])
     onKeyDown(ev: KeyboardEvent) {
         // do something meaningful with it
-        console.log(`The user just pressed ${ev.key}!`);
+        // console.log(`The user just pressed ${ev.key}!`);
         this.moveService.addOrder(ev);
         if ( ev.keyCode === 83) {
             this.moveService.removeFocusedUnit();
@@ -21,5 +21,4 @@ export class KeyHander {
         }
     }
  
-
 }

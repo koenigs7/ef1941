@@ -9,8 +9,20 @@ import { Terrain } from 'src/app/model/terrain';
 export enum Nationality {
     GERMAN = 'G',
     RUSSIAN = 'R',
-    FINNISH = 'F'
+    FINNISH = 'F',
+    HUNGARIAN = 'H',
+    ROMAINIAN = 'O',
+    ITALIAN = 'I'
 }
+
+const NationalityMap = {
+    'G' : 'grey.png',
+    'R' : 'red.png',
+    'F' : 'white.png',
+    'O' : 'green.png',
+    'H' : 'green.png',
+    'I' : 'green.png'
+};
 
 export enum UnitType {
     ARMOR,
@@ -62,7 +74,7 @@ export class UnitComponent implements OnInit {
 
 
     ngOnInit() { 
-        this.imageSrc = 'assets/images/units/' + ( this.nationality === Nationality.GERMAN ? 'grey.png' : 'red.png' );
+        this.imageSrc = 'assets/images/units/' + NationalityMap[this.nationality];
         this.combatStrength = this.musterStrength;
         this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
