@@ -71,7 +71,7 @@ export class MapService {
             return Terrain.SWAMP;
         } else if ( terrainCode >= 143 && terrainCode <= 168 ) {
             return Terrain.RIVER;
-        } else if ( terrainCode >= 169 && terrainCode <= 179 ) {
+        } else if ( terrainCode >= 169 && terrainCode <= 190 ) {
             return Terrain.COAST;
         } else if ( terrainCode === 191 ) {
             return Terrain.SEA; 

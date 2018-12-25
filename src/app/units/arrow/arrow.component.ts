@@ -71,7 +71,8 @@ export class ArrowComponent implements OnInit {
     async move(direction: number) {  
         this.z = 4;
         for (let i = 0; i < 40; i++) {
-            await new Promise((resolve, reject) => setTimeout(resolve, 4));
+            if ( i % 2 === 0)
+            await new Promise((resolve, reject) => setTimeout(resolve, 1));
             switch (direction) {
                 case 1:
                     this.y--;

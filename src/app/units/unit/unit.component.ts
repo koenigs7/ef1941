@@ -64,7 +64,7 @@ export class UnitComponent implements OnInit {
     public selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
-    public type: UnitType = UnitType.ARMOR;
+    public type;
     public state:UnitState = UnitState.ACTIVE;
     public imageSrc:string;
 
@@ -76,6 +76,7 @@ export class UnitComponent implements OnInit {
     ngOnInit() { 
         this.imageSrc = 'assets/images/units/' + NationalityMap[this.nationality];
         this.combatStrength = this.musterStrength;
+        this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR :UnitType.INFANTRY;
         this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
