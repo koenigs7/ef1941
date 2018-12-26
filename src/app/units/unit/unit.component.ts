@@ -64,7 +64,7 @@ export class UnitComponent implements OnInit {
     public selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
-    public type;
+    public type: UnitType;
     public state:UnitState = UnitState.ACTIVE;
     public imageSrc:string;
 

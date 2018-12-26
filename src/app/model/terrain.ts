@@ -1,3 +1,4 @@
+import { UnitType } from '../units/unit/unit.component';
 
 
 export class Terrain {
@@ -12,8 +13,8 @@ export class Terrain {
     static SEA = new Terrain(99, 99, 1, 1);
 
 
-    armorMovementCost;
-    infantryMovementCost;
+    private armorMovementCost;
+    private infantryMovementCost;
     defensiveValue;
     offensiveValue;
 
@@ -24,6 +25,9 @@ export class Terrain {
         this.defensiveValue = defense;
     }
 
+    movementCost(type: UnitType) {
+        return type === UnitType.ARMOR ? this.armorMovementCost : this.armorMovementCost.infantryMovementCost;
+    }
 
 
 }

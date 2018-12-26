@@ -22,7 +22,7 @@ export class TurnService {
         this.unitService.units.forEach((unit: UnitComponent) => {
             const move = unit.orders[0];
             if ( move ) {
-                    unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
+                    unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
                     console.log(unit.name + ' will move on turn ' + unit.turnToMove+' to '+
                         JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move))); 
             } else {
@@ -49,7 +49,7 @@ export class TurnService {
                             }
                         } else {
                             unit.moveByOrders();
-                            unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).armorMovementCost;
+                            unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
                             console.log(unit.name + ' moving on turn '+unit.turnToMove+' to '+
                                 JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
                         }
