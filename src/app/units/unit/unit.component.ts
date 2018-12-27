@@ -15,13 +15,13 @@ export enum Nationality {
     ITALIAN = 'I'
 }
 
-const NationalityMap = {
-    'G' : 'grey.png',
-    'R' : 'red.png',
-    'F' : 'white.png',
-    'O' : 'green.png',
-    'H' : 'green.png',
-    'I' : 'green.png'
+const ImageMap = {
+    'G' : ['grey.png','greyi.png'],
+    'R' : ['red.png','redi.png'],
+    'F' : ['white.png','white.png'],
+    'O' : ['green.png','green.png'],
+    'H' : ['green.png','green.png'],
+    'I' : ['green.png','green.png']
 };
 
 export enum UnitType {
@@ -68,15 +68,15 @@ export class UnitComponent implements OnInit {
     public state:UnitState = UnitState.ACTIVE;
     public imageSrc:string;
 
-    constructor(private moveService: OrderService,  private mapService: MapService, private unitService: UnitService) {
+    constructor(private moveService: OrderService, private unitService: UnitService) {
         this.unitService.addUnit(this);
     }
 
 
     ngOnInit() { 
-        this.imageSrc = 'assets/images/units/' + NationalityMap[this.nationality];
-        this.combatStrength = this.musterStrength;
         this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR :UnitType.INFANTRY;
+        this.imageSrc = 'assets/images/units/' + ImageMap[this.nationality][this.type.valueOf()];
+        this.combatStrength = this.musterStrength;
         this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
@@ -110,9 +110,9 @@ export class UnitComponent implements OnInit {
         return new Location(this.x, this.y);
     }
 
-    getTerrain(): Terrain {
-        return this.mapService.getTerrainAt(this.x, this.y);
-    }
+    // getTerrain(): Terrain {
+    //     return this.mapService.getTerrainAt(this.x, this.y);
+    // }
 
     clicked() {
         this.moveService.setFocusedUnit(this);

@@ -12,7 +12,7 @@ export class CombatService {
     
     resolve(attacker: UnitComponent, defender: UnitComponent): any {
         let defenderStrength = defender.combatStrength;
-        const multipler = defender.getTerrain().defensiveValue;
+        const multipler = this.mapService.getTerrainAt(defender.getLocation().x,defender.getLocation().y).defensiveValue;
         if ( multipler === 2 ) defenderStrength /= 2;
         if ( multipler === 3 ) defenderStrength *= 2 % 255;
         if ( defender.orders.length ) defenderStrength /=2 ;
