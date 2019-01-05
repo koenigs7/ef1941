@@ -20,12 +20,12 @@ export enum Alliance {
 }
 
 const ImageMap = {
-    'G' : ['grey.png','greyi.png'],
-    'R' : ['red.png','redi.png'],
-    'F' : ['white.png','white.png'],
-    'O' : ['green.png','green.png'],
-    'H' : ['green.png','green.png'],
-    'I' : ['green.png','green.png']
+    'G': ['grey.png', 'greyi.png'],
+    'R': ['red.png', 'redi.png'],
+    'F': ['white.png', 'white.png'],
+    'O': ['green.png', 'green.png'],
+    'H': ['green.png', 'green.png'],
+    'I': ['green.png', 'green.png']
 };
 
 export enum UnitType {
@@ -69,21 +69,21 @@ export class UnitComponent implements OnInit {
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType;
-    public state:UnitState;
-    public imageSrc:string;
+    public state: UnitState;
+    public imageSrc: string;
 
     constructor(private moveService: OrderService, private unitService: UnitService) {
         this.unitService.addUnit(this);
     }
 
 
-    ngOnInit() { 
-        this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR :UnitType.INFANTRY;
+    ngOnInit() {
+        this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR : UnitType.INFANTRY;
         this.imageSrc = 'assets/images/units/' + ImageMap[this.nationality][this.type.valueOf()];
         this.state = +this.arrive === 0 ? UnitState.ACTIVE : UnitState.RESERVE;
-        console.log(this.arrive + ','+this.state);
+        console.log(this.arrive + ',' + this.state);
         this.combatStrength = +this.musterStrength;
-        this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
+        this.setLocation(new Location(45 - this.x, 38 - this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
                 this.orders.push(direction);
@@ -116,7 +116,7 @@ export class UnitComponent implements OnInit {
         return new Location(this.x, this.y);
     }
 
-    
+
     clearOrders(): any {
         this.orders = [];
     }
@@ -135,6 +135,15 @@ export class UnitComponent implements OnInit {
         }
     }
 
+    getNextMoveLocation(): Location {
+        const move = this.nextOrder();
+        if (move) {
+            const nextLocation =  this.getLocation().ifMovedTo([move]);
+            return nextLocation.isValid() ? nextLocation : null;
+        }
+        return null;
+    }
+
     nextOrder(): Direction {
         return this.orders[0];
     }
@@ -151,16 +160,16 @@ export class UnitComponent implements OnInit {
         }
     }
 
-    changeState(newState:UnitState): UnitState {
+    changeState(newState: UnitState): UnitState {
         this.state = newState;
-        if ( newState === UnitState.DEAD ) {
+        if (newState === UnitState.DEAD) {
             this.orders = [];
             return UnitState.DEAD;
         }
-        if ( newState === UnitState.RESERVE ) {
+        if (newState === UnitState.RESERVE) {
             return UnitState.RESERVE;
         }
-        if ( newState === UnitState.ACTIVE ) { 
+        if (newState === UnitState.ACTIVE) {
             return UnitState.ACTIVE;
         }
     }
@@ -170,15 +179,15 @@ export class UnitComponent implements OnInit {
         this.musterStrength -= lossType;
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 20) {
-            return this.changeState(UnitState.DEAD); 
+            return this.changeState(UnitState.DEAD);
         } else {
             return UnitState.ACTIVE;
         }
     }
 
     getArrowLocation(index: number): Location {
-        const location = new Location(this.x,this.y).ifMovedTo(this.orders.slice(0,index+1));
-        return new Location(location.x*40+13,location.y*40+13);
+        const location = new Location(this.x, this.y).ifMovedTo(this.orders.slice(0, index + 1));
+        return new Location(location.x * 40 + 13, location.y * 40 + 13);
     }
 
     getArrowRotation(index: number): number {

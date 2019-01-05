@@ -10,55 +10,57 @@ import { SupplyService } from './supply.service';
 export class TurnService {
 
     constructor(private mapService: MapService, private unitService: UnitService,
-        private supplyService: SupplyService, private combatService:CombatService) {}
+        private supplyService: SupplyService, private combatService: CombatService) { }
 
     private SUBTURNS = 32;
     private combatInProgress = false;
     private turnNumber = 0;
 
     public async startCombat() {
-        if ( this.combatInProgress ) {
+        if (this.combatInProgress) {
             return;
         }
         this.combatInProgress = true;
 
         this.unitService.units.forEach((unit: UnitComponent) => {
-            const move = unit.orders[0];
-            if ( move ) {
-                    unit.turnToMove = this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
-                    console.log(unit.name + ' will move on turn ' + unit.turnToMove+' to '+
-                        JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move))); 
+            const location = unit.getNextMoveLocation();
+            if (location && location.isValid()) {
+                unit.turnToMove = this.mapService.getTerrainAt(location.x, location.y).movementCost(unit.type);
+                console.log(unit.name + ' will move on turn ' + unit.turnToMove);
             } else {
-                unit.turnToMove = this.SUBTURNS+1;
+                unit.clearOrders();
             }
         });
 
 
-        for ( let turn = 1 ; turn <= this.SUBTURNS ; turn++ ) {
+        for (let turn = 1; turn <= this.SUBTURNS; turn++) {
             this.unitService.units.forEach(unit => {
-                if ( unit.turnToMove === turn ) {
-                    const move = unit.nextOrder();
-                    if ( move ) { 
-                        const location = unit.getLocation().ifMovedTo([move]); 
+                if (unit.turnToMove === turn) {
+                    const location = unit.getNextMoveLocation();
+                    if (location && location.isValid()) {
                         const unitInWay = this.unitService.unitAt(location);
-                        if ( unitInWay && unitInWay.state === UnitState.ACTIVE ) {
-                            if ( unitInWay.nationality === unit.nationality  ) {
+                        if (unitInWay && unitInWay.state === UnitState.ACTIVE) {
+                            if (unitInWay.nationality === unit.nationality) {
                                 console.log(location + ' is occupied by friendly');
-                                 unit.turnToMove += 2; 
-                            } else  {
+                                unit.turnToMove += 2;
+                            } else {
                                 console.log('Combat');
-                                this.combatService.resolve(unit,unitInWay);
+                                this.combatService.resolve(unit, unitInWay);
                                 unit.turnToMove += 1;
                             }
                         } else {
-                            if ( unit.moveByOrders()) {
-                                unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
-                                console.log(unit.name + ' moving on turn '+unit.turnToMove+' to '+
-                                    JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
+                            unit.moveByOrders();
+                            const nextlocation = unit.getNextMoveLocation();
+                            if (nextlocation && nextlocation.isValid()) {
+                                unit.turnToMove += this.mapService.getTerrainAt(nextlocation.x, nextlocation.y).movementCost(unit.type);
+                                console.log(unit.name + ' will move on turn ' + unit.turnToMove);
+                            } else {
+                                unit.clearOrders();
                             }
                         }
                     } else {
-                        console.log(unit.name+' out of orders');
+                        unit.clearOrders();
+                        console.log(unit.name + ' out of orders');
                     }
                 }
             });
@@ -70,11 +72,11 @@ export class TurnService {
         this.turnNumber++;
         // Activate Reserves
         this.unitService.units.forEach(unit => {
-            if ( +unit.arrive === this.turnNumber ) {
+            if (+unit.arrive === this.turnNumber) {
                 const unitInWay = this.unitService.unitAt(unit.getLocation());
-                if ( unitInWay && unitInWay.name !== unit.name ) {
+                if (unitInWay && unitInWay.name !== unit.name) {
                     unit.arrive++;
-                    console.log('reserve blocked '+unit.name);
+                    console.log('reserve blocked ' + unit.name);
                 } else {
                     unit.changeState(UnitState.ACTIVE);
                 }
