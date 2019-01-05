@@ -72,13 +72,15 @@ export class UnitComponent implements OnInit {
     public state: UnitState;
     public imageSrc: string;
 
+    private armorNames = ['Panzer','Tank','Cav'];
+
     constructor(private moveService: OrderService, private unitService: UnitService) {
         this.unitService.addUnit(this);
     }
 
 
     ngOnInit() {
-        this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR : UnitType.INFANTRY;
+        this.type = this.armorNames.find(name => this.name.includes(name)) ? UnitType.ARMOR : UnitType.INFANTRY;
         this.imageSrc = 'assets/images/units/' + ImageMap[this.nationality][this.type.valueOf()];
         this.state = +this.arrive === 0 ? UnitState.ACTIVE : UnitState.RESERVE;
         console.log(this.arrive + ',' + this.state);

@@ -23,12 +23,19 @@ export class TurnService {
         this.combatInProgress = true;
 
         this.unitService.units.forEach((unit: UnitComponent) => {
-            const location = unit.getNextMoveLocation();
-            if (location && location.isValid()) {
-                unit.turnToMove = this.mapService.getTerrainAt(location.x, location.y).movementCost(unit.type);
-                console.log(unit.name + ' will move on turn ' + unit.turnToMove);
-            } else {
-                unit.clearOrders();
+            if (unit.state === UnitState.ACTIVE) {
+                const location = unit.getNextMoveLocation();
+                if (location && location.isValid()) {
+                    unit.turnToMove = this.mapService.getTerrainAt(location.x, location.y).movementCost(unit.type);
+                    console.log(unit.name + ' will move on turn ' + unit.turnToMove);
+                    const unitInWay = this.unitService.unitAt(location);
+                    if (unitInWay) {
+                        unit.turnToMove = 1;
+                    }
+                } else {
+                    unit.clearOrders();
+                }
+
             }
         });
 
@@ -39,7 +46,7 @@ export class TurnService {
                     const location = unit.getNextMoveLocation();
                     if (location && location.isValid()) {
                         const unitInWay = this.unitService.unitAt(location);
-                        if (unitInWay && unitInWay.state === UnitState.ACTIVE) {
+                        if (unitInWay) {
                             if (unitInWay.nationality === unit.nationality) {
                                 console.log(location + ' is occupied by friendly');
                                 unit.turnToMove += 2;

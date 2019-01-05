@@ -74,7 +74,10 @@ export class CombatService {
     }
 
     isZOCclear(zocMap,defender:UnitComponent,retreatDirection) {
-        const retreatLocation = defender.getLocation();
+        const retreatLocation = defender.getLocation().ifMovedTo([retreatDirection]);
+        if ( this.unitService.unitAt(retreatLocation)) {
+            return false;
+        }
         if ( !retreatLocation.isValid()) {
             return false;
         }
