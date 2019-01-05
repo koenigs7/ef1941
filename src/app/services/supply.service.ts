@@ -24,12 +24,17 @@ export class SupplyService {
         console.log(this.zocMap);
         this.unitService.units.forEach((unit: UnitComponent) => {
             if (unit.nationality !== Nationality.RUSSIAN) { 
-                if ( unit.name === '46 Panzer Corps') {
+                if ( true || unit.name === '46 Panzer Corps') {
                     console.log('calculating suppy for 46');
 
                     const location = unit.getLocation();
-                    const inSupply = this.checkSupplyRoute(location, 100);
-                    console.log(inSupply);
+                    const supplyPercent = this.checkSupplyRoute(location, 100);
+                    if ( supplyPercent === 0 ) {
+                        console.log(unit.name + ' out of supply');
+                        unit.combatStrength -= Math.round(unit.combatStrength/2);
+                    } else {
+                        unit.combatStrength = +unit.combatStrength+Math.round((unit.musterStrength - unit.combatStrength)*supplyPercent/100);
+                    }
                 }
             }
         });
