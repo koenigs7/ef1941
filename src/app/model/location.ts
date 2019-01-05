@@ -3,8 +3,6 @@ import { Direction } from './direction';
 
 export class Location {
 
-    static DEAD = new Location(-1, -1);
-
     constructor(public x: number, public y: number) { }
 
     toString() {

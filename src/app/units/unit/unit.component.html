@@ -1,5 +1,5 @@
 <div (click)=clicked($event) 
-    class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px' ,  'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
+    class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px', 'display': state?'none':'block' , 'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
     <img style="vertical-align: top;" src={{imageSrc}}>
     <div class="tooltip">
         <div>{{name}}</div>

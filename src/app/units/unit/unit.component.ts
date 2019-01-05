@@ -14,6 +14,11 @@ export enum Nationality {
     ITALIAN = 'I'
 }
 
+export enum Alliance {
+    AXIS,
+    ALLIES
+}
+
 const ImageMap = {
     'G' : ['grey.png','greyi.png'],
     'R' : ['red.png','redi.png'],
@@ -37,7 +42,7 @@ export enum CombatLossType {
 export enum UnitState {
     ACTIVE,
     DEAD,
-    WAITING
+    RESERVE
 }
 
 @Component({
@@ -56,7 +61,7 @@ export class UnitComponent implements OnInit {
     @Input() musterStrength: number;
     @Input() arrive: number;
 
-    public combatStrength;
+    public combatStrength: number;
     public screenX;
     public screenY;
     public z = 2;
@@ -64,7 +69,7 @@ export class UnitComponent implements OnInit {
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType;
-    public state:UnitState = UnitState.ACTIVE;
+    public state:UnitState;
     public imageSrc:string;
 
     constructor(private moveService: OrderService, private unitService: UnitService) {
@@ -75,7 +80,9 @@ export class UnitComponent implements OnInit {
     ngOnInit() { 
         this.type = this.name.includes('Panzer') || this.name.includes('Tank') ? UnitType.ARMOR :UnitType.INFANTRY;
         this.imageSrc = 'assets/images/units/' + ImageMap[this.nationality][this.type.valueOf()];
-        this.combatStrength = this.musterStrength;
+        this.state = +this.arrive === 0 ? UnitState.ACTIVE : UnitState.RESERVE;
+        console.log(this.arrive + ','+this.state);
+        this.combatStrength = +this.musterStrength;
         this.setLocation(new Location(45-this.x, 38-this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
             if (direction && this.selected) {
@@ -148,8 +155,13 @@ export class UnitComponent implements OnInit {
         this.state = newState;
         if ( newState === UnitState.DEAD ) {
             this.orders = [];
-            this.setLocation(Location.DEAD);
             return UnitState.DEAD;
+        }
+        if ( newState === UnitState.RESERVE ) {
+            return UnitState.RESERVE;
+        }
+        if ( newState === UnitState.ACTIVE ) { 
+            return UnitState.ACTIVE;
         }
     }
 

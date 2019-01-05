@@ -1,4 +1,4 @@
-import { UnitComponent } from '../units/unit/unit.component';
+import { UnitComponent, UnitState } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
@@ -14,6 +14,7 @@ export class TurnService {
 
     private SUBTURNS = 32;
     private combatInProgress = false;
+    private turnNumber = 0;
 
     public async startCombat() {
         if ( this.combatInProgress ) {
@@ -40,8 +41,8 @@ export class TurnService {
                     if ( move ) { 
                         const location = unit.getLocation().ifMovedTo([move]); 
                         const unitInWay = this.unitService.unitAt(location);
-                        if ( unitInWay  ) {
-                            if ( unitInWay.nationality === unit.nationality ) {
+                        if ( unitInWay && unitInWay.state === UnitState.ACTIVE ) {
+                            if ( unitInWay.nationality === unit.nationality  ) {
                                 console.log(location + ' is occupied by friendly');
                                  unit.turnToMove += 2; 
                             } else  {
@@ -50,10 +51,11 @@ export class TurnService {
                                 unit.turnToMove += 1;
                             }
                         } else {
-                            unit.moveByOrders();
-                            unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
-                            console.log(unit.name + ' moving on turn '+unit.turnToMove+' to '+
-                                JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
+                            if ( unit.moveByOrders()) {
+                                unit.turnToMove = turn + this.mapService.getTerrainWithDirection(unit.x,unit.y,move).movementCost(unit.type);
+                                console.log(unit.name + ' moving on turn '+unit.turnToMove+' to '+
+                                    JSON.stringify(this.mapService.getTerrainWithDirection(unit.x,unit.y,move)));
+                            }
                         }
                     } else {
                         console.log(unit.name+' out of orders');
@@ -65,6 +67,19 @@ export class TurnService {
 
         }
         this.supplyService.calculateSupply();
+        this.turnNumber++;
+        // Activate Reserves
+        this.unitService.units.forEach(unit => {
+            if ( +unit.arrive === this.turnNumber ) {
+                const unitInWay = this.unitService.unitAt(unit.getLocation());
+                if ( unitInWay && unitInWay.name !== unit.name ) {
+                    unit.arrive++;
+                    console.log('reserve blocked '+unit.name);
+                } else {
+                    unit.changeState(UnitState.ACTIVE);
+                }
+            }
+        });
         this.combatInProgress = false;
     }
 

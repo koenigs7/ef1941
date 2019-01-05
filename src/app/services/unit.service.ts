@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent, UnitType, UnitState, Nationality } from '../units/unit/unit.component';
+import { UnitComponent, UnitType, UnitState, Nationality, Alliance } from '../units/unit/unit.component';
 import { Location } from '../model/location';
 import { Direction } from '../model/direction'; 
 
@@ -17,10 +17,11 @@ export class UnitService {
         return this.units.find(unit => unit.x === location.x && unit.y === location.y );
     }
 
-    createZOCmap(nationality: Nationality) {
+    createZOCmap(alliance: Alliance) {
         const zocMap = new Map<string,number>();
         this.units.forEach(unit => {
-            if ( unit.state === UnitState.ACTIVE && unit.nationality === nationality ) {
+            if ( unit.state === UnitState.ACTIVE && 
+                alliance === Alliance.ALLIES ? unit.nationality === Nationality.RUSSIAN : unit.nationality !== Nationality.RUSSIAN) {
                 const loc = unit.getLocation();
                 zocMap.set(loc.toString(),1);
                 zocMap.set(loc.ifMovedTo([Direction.NORTH]).toString(),1);
