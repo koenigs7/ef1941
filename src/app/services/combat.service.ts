@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent, CombatLossType } from '../units/unit/unit.component';
+import { UnitComponent, CombatLossType, Nationality, Alliance } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { UnitService } from './unit.service';
 import { Direction } from '../model/direction';
@@ -30,7 +30,7 @@ export class CombatService {
                 console.log(defender.name+' died retreating');
                 return;
             }
-            const zocMap = this.unitService.createZOCmap(attacker.nationality);
+            const zocMap = this.unitService.createZOCmap(attacker.nationality===Nationality.RUSSIAN?Alliance.ALLIES:Alliance.AXIS);
             // try to retreat directly away first
             let retreatDirection = null;
             if ( attacker.getLocation().x === defender.getLocation().x ) {
@@ -73,8 +73,11 @@ export class CombatService {
 
     }
 
-    isZOCclear(zocMap,defender,retreatDirection) {
+    isZOCclear(zocMap,defender:UnitComponent,retreatDirection) {
         const retreatLocation = defender.getLocation();
+        if ( !retreatLocation.isValid()) {
+            return false;
+        }
         if ( this.mapService.getTerrainAt(retreatLocation.x,retreatLocation.y) === Terrain.SEA ) {
             return false;
         }
