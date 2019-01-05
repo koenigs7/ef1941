@@ -4,7 +4,6 @@ import { MapService } from 'src/app/services/map.service';
 import { UnitService } from 'src/app/services/unit.service';
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
-import { Terrain } from 'src/app/model/terrain';
 
 export enum Nationality {
     GERMAN = 'G',
@@ -110,9 +109,10 @@ export class UnitComponent implements OnInit {
         return new Location(this.x, this.y);
     }
 
-    // getTerrain(): Terrain {
-    //     return this.mapService.getTerrainAt(this.x, this.y);
-    // }
+    
+    clearOrders(): any {
+        this.orders = [];
+    }
 
     clicked() {
         this.moveService.setFocusedUnit(this);
@@ -161,6 +161,24 @@ export class UnitComponent implements OnInit {
             return this.changeState(UnitState.DEAD); 
         } else {
             return UnitState.ACTIVE;
+        }
+    }
+
+    getArrowLocation(index: number): Location {
+        const location = new Location(this.x,this.y).ifMovedTo(this.orders.slice(0,index+1));
+        return new Location(location.x*40+13,location.y*40+13);
+    }
+
+    getArrowRotation(index: number): number {
+        switch (this.orders[index]) {
+            case Direction.EAST:
+                return 0;
+            case Direction.NORTH:
+                return -90;
+            case Direction.SOUTH:
+                return 90;
+            case Direction.WEST:
+                return 180;
         }
     }
 

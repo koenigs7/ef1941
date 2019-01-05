@@ -19,6 +19,10 @@ export class Location {
         return newLocation;
     }
 
+    isValid() {
+        return this.x >= 0 && this.x <= 45 && this.y >= 0 && this.y <= 37;
+    }
+
 
     offsetBy(direction: Direction): Location {
         let x = this.x;

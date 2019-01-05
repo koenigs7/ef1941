@@ -6,7 +6,7 @@ import { TurnService } from '../services/turn.service';
     selector: 'app-event',
     template: ''
 })
-export class KeyHander {
+export class KeyHanderComponent {
 
     constructor(private moveService: OrderService, private combatService: TurnService) { }
 
@@ -18,6 +18,9 @@ export class KeyHander {
         if ( ev.keyCode === 83) {
             this.moveService.removeFocusedUnit();
             this.combatService.startCombat();
+        }
+        if ( ev.keyCode === 67) {
+            this.moveService.cancelOrders();
         }
     }
  

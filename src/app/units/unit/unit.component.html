@@ -9,3 +9,7 @@
         </div>
     </div>
 </div>
+
+<div *ngFor="let unused of orders; index as i">
+        <img *ngIf="selected && orders[i]" [ngStyle]="{ 'position':'absolute', 'transform':'rotate('+ getArrowRotation(i) + 'deg)'  , 'z-index':z-1, 'top':getArrowLocation(i).y +'px' , 'left':getArrowLocation(i).x +'px'  }" src="assets/images/units/arrow.png"> 
+</div>

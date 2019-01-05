@@ -3,12 +3,14 @@ import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
 import { CombatService } from './combat.service';
+import { SupplyService } from './supply.service';
 
 
 @Injectable()
 export class TurnService {
 
-    constructor(private mapService: MapService, private unitService: UnitService,private combatService:CombatService) {}
+    constructor(private mapService: MapService, private unitService: UnitService,
+        private supplyService: SupplyService, private combatService:CombatService) {}
 
     private SUBTURNS = 32;
     private combatInProgress = false;
@@ -62,6 +64,7 @@ export class TurnService {
             console.log(turn);
 
         }
+        this.supplyService.calculateSupply();
         this.combatInProgress = false;
     }
 

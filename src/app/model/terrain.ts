@@ -26,7 +26,7 @@ export class Terrain {
     }
 
     movementCost(type: UnitType) {
-        return type === UnitType.ARMOR ? this.armorMovementCost : this.armorMovementCost.infantryMovementCost;
+        return type === UnitType.ARMOR ? this.armorMovementCost : this.infantryMovementCost;
     }
 
 

@@ -34,4 +34,11 @@ export class OrderService {
         }
     }
 
+    
+    cancelOrders(): void { 
+        if ( this.focusedUnit ) {
+            this.focusedUnit.clearOrders();
+        }
+    }
+
 }
