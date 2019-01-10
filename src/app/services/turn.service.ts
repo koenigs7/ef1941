@@ -26,7 +26,7 @@ export class TurnService {
             if (unit.state === UnitState.ACTIVE) {
                 const location = unit.getNextMoveLocation();
                 if (location && location.isValid()) {
-                    unit.turnToMove = this.mapService.getTerrainAt(location.x, location.y).movementCost(unit.type);
+                    unit.turnToMove = this.mapService.getTerrain(location).movementCost(unit.type);
                     console.log(unit.name + ' will move on turn ' + unit.turnToMove);
                     const unitInWay = this.unitService.unitAt(location);
                     if (unitInWay) {
@@ -59,7 +59,7 @@ export class TurnService {
                             unit.moveByOrders();
                             const nextlocation = unit.getNextMoveLocation();
                             if (nextlocation && nextlocation.isValid()) {
-                                unit.turnToMove += this.mapService.getTerrainAt(nextlocation.x, nextlocation.y).movementCost(unit.type);
+                                unit.turnToMove += this.mapService.getTerrain(nextlocation).movementCost(unit.type);
                                 console.log(unit.name + ' will move on turn ' + unit.turnToMove);
                             } else {
                                 unit.clearOrders();

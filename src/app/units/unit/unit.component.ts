@@ -62,8 +62,8 @@ export class UnitComponent implements OnInit {
     @Input() arrive: number;
 
     public combatStrength: number;
-    public screenX;
-    public screenY;
+    public screenX: number;
+    public screenY: number;
     public z = 2;
     public selected = false;
     public orders: Direction[] = [];
@@ -180,7 +180,7 @@ export class UnitComponent implements OnInit {
     takeLossAndCheckForDead(lossType: CombatLossType): UnitState {
         this.musterStrength -= lossType;
         this.combatStrength -= lossType * 5;
-        if (this.combatStrength < 20) {
+        if (this.combatStrength < 10) {
             return this.changeState(UnitState.DEAD);
         } else {
             return UnitState.ACTIVE;

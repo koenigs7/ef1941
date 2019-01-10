@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Terrain } from '../model/terrain';
 import { Direction } from '../model/direction';
+import { Location } from '../model/location';
 
 
 @Injectable()
@@ -57,6 +58,10 @@ export class MapService {
         return this.theMap;
     }
 
+    getTerrain(location:Location) {
+        return this.getTerrainAt(location.x, location.y);
+    }
+
     
     getTerrainAt(x:number,y:number): Terrain {
         const terrainCode = this.theMap[y][x];
@@ -80,12 +85,12 @@ export class MapService {
         }
     }
 
-    getTerrainWithDirection(x,y,direction:Direction): Terrain {
-        if ( direction === Direction.NORTH ) return this.getTerrainAt(x,y-1);
-        if ( direction === Direction.EAST ) return this.getTerrainAt(x+1,y);
-        if ( direction === Direction.SOUTH ) return this.getTerrainAt(x,y+1);
-        if ( direction === Direction.WEST ) return this.getTerrainAt(x-1,y);
-        console.log('bad direction '+direction);
-    }
+    // getTerrainWithDirection1(x,y,direction:Direction): Terrain {
+    //     if ( direction === Direction.NORTH ) return this.getTerrainAt(x,y-1);
+    //     if ( direction === Direction.EAST ) return this.getTerrainAt(x+1,y);
+    //     if ( direction === Direction.SOUTH ) return this.getTerrainAt(x,y+1);
+    //     if ( direction === Direction.WEST ) return this.getTerrainAt(x-1,y);
+    //     console.log('bad direction '+direction);
+    // }
 
 }

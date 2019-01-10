@@ -12,7 +12,7 @@ export class CombatService {
     
     resolve(attacker: UnitComponent, defender: UnitComponent): any {
         let defenderStrength = defender.combatStrength;
-        const multipler = this.mapService.getTerrainAt(defender.getLocation().x,defender.getLocation().y).defensiveValue;
+        const multipler = this.mapService.getTerrain(defender.getLocation()).defensiveValue;
         if ( multipler === 2 ) defenderStrength /= 2;
         if ( multipler === 3 ) defenderStrength *= 2 % 255;
         if ( defender.orders.length ) defenderStrength /=2 ;
@@ -81,7 +81,7 @@ export class CombatService {
         if ( !retreatLocation.isValid()) {
             return false;
         }
-        if ( this.mapService.getTerrainAt(retreatLocation.x,retreatLocation.y) === Terrain.SEA ) {
+        if ( this.mapService.getTerrain(retreatLocation) === Terrain.SEA ) {
             return false;
         }
         const value = zocMap.get(retreatLocation.offsetBy(retreatDirection).toString());
