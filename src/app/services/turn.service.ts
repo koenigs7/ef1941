@@ -1,15 +1,16 @@
-import { UnitComponent, UnitState } from '../units/unit/unit.component';
+import { UnitComponent, UnitState, Nationality } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
 import { CombatService } from './combat.service';
 import { SupplyService } from './supply.service';
+import { AIService } from './ai.service';
 
 
 @Injectable()
 export class TurnService {
 
-    constructor(private mapService: MapService, private unitService: UnitService,
+    constructor(private mapService: MapService, private unitService: UnitService, private aiService: AIService,
         private supplyService: SupplyService, private combatService: CombatService) { }
 
     private SUBTURNS = 32;
@@ -89,6 +90,7 @@ export class TurnService {
                 }
             }
         });
+        this.aiService.calculateIFRs(Nationality.RUSSIAN);
         this.combatInProgress = false;
     }
 

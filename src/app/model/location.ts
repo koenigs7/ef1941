@@ -1,4 +1,5 @@
 import { Direction } from './direction';
+import { getLocaleCurrencyName } from '@angular/common';
 
 
 export class Location {
@@ -7,6 +8,25 @@ export class Location {
 
     toString() {
         return '[' + this.x + ',' + this.y + ']';
+    }
+
+
+    distanceTo(loc: Location): number {
+        return Math.sqrt(Math.pow(this.x - loc.x, 2) * Math.pow(this.y - loc.y, 2));
+    }
+
+    directionTo(loc:Location): Direction { 
+        const difX = loc.x - this.x;
+        const difY = loc.y - this.y; 
+        if ( difX > 0) {
+            if ( difX >= Math.abs(difY)) {
+                return Direction.EAST;
+            } else return difY > 0 ? Direction.SOUTH : Direction.NORTH;
+        } else {
+            if ( -difX >= Math.abs(difY)) {
+                return Direction.WEST;
+            } else return difY > 0 ? Direction.SOUTH : Direction.NORTH;
+        }
     }
 
     ifMovedTo(directions: Direction[]): Location {

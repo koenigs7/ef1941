@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderService } from 'src/app/services/move.service';
-import { MapService } from 'src/app/services/map.service';
-import { UnitService } from 'src/app/services/unit.service';
+import { OrderService } from 'src/app/services/move.service'; 
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
 
@@ -52,6 +50,8 @@ export enum UnitState {
 })
 export class UnitComponent implements OnInit {
 
+    static allUnits: UnitComponent[] = [];
+
     static SELECTED_BORDER_WIDTH = 5;
 
     @Input() x: number;
@@ -72,10 +72,11 @@ export class UnitComponent implements OnInit {
     public state: UnitState;
     public imageSrc: string;
 
+
     private armorNames = ['Panzer','Tank','Cav'];
 
-    constructor(private moveService: OrderService, private unitService: UnitService) {
-        this.unitService.addUnit(this);
+    constructor(private moveService: OrderService) {
+        UnitComponent.allUnits.push(this);
     }
 
 
@@ -83,7 +84,6 @@ export class UnitComponent implements OnInit {
         this.type = this.armorNames.find(name => this.name.includes(name)) ? UnitType.ARMOR : UnitType.INFANTRY;
         this.imageSrc = 'assets/images/units/' + ImageMap[this.nationality][this.type.valueOf()];
         this.state = +this.arrive === 0 ? UnitState.ACTIVE : UnitState.RESERVE;
-        console.log(this.arrive + ',' + this.state);
         this.combatStrength = +this.musterStrength;
         this.setLocation(new Location(45 - this.x, 38 - this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {

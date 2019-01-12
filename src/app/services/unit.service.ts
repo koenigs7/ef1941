@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent, UnitType, UnitState, Nationality, Alliance } from '../units/unit/unit.component';
+import { UnitComponent,  UnitState, Nationality, Alliance } from '../units/unit/unit.component';
 import { Location } from '../model/location';
 import { Direction } from '../model/direction';
 
@@ -7,11 +7,20 @@ import { Direction } from '../model/direction';
 @Injectable()
 export class UnitService {
 
-    units: UnitComponent[] = [];
+    units: UnitComponent[] = UnitComponent.allUnits;
 
-    addUnit(u: UnitComponent) {
-        this.units.push(u);
+    static activeUnitsFilter(unit: UnitComponent): boolean {
+        return unit.state === UnitState.ACTIVE;
     }
+
+    static alliesFilter(unit: UnitComponent): boolean {
+        return unit.nationality === Nationality.RUSSIAN;
+    }
+
+    static axisFilter(unit: UnitComponent): boolean {
+        return unit.nationality !== Nationality.RUSSIAN;
+    }
+
 
     unitAt(location: Location): UnitComponent {
         return this.units.find(unit => unit.x === location.x && unit.y === location.y && unit.state === UnitState.ACTIVE);
@@ -19,8 +28,8 @@ export class UnitService {
 
     createZOCmap(alliance: Alliance) {
         const zocMap = new Map<string, number>();
-        this.units.forEach(unit => {
-            if (unit.state === UnitState.ACTIVE &&
+        this.units.filter(UnitService.activeUnitsFilter).forEach(unit => {
+            if ( 
                 alliance === Alliance.ALLIES ? unit.nationality === Nationality.RUSSIAN : unit.nationality !== Nationality.RUSSIAN) {
                 const loc = unit.getLocation();
                 zocMap.set(loc.toString(), 1);
