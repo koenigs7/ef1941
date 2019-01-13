@@ -12,7 +12,7 @@ export class Location {
 
 
     distanceTo(loc: Location): number {
-        return Math.sqrt(Math.pow(this.x - loc.x, 2) * Math.pow(this.y - loc.y, 2));
+        return Math.sqrt(Math.pow(this.x - loc.x, 2) + Math.pow(this.y - loc.y, 2));
     }
 
     directionTo(loc:Location): Direction { 

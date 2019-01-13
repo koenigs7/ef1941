@@ -23,26 +23,23 @@ export class TurnService {
         }
         this.combatInProgress = true;
 
-        this.unitService.units.forEach((unit: UnitComponent) => {
-            if (unit.state === UnitState.ACTIVE) {
-                const location = unit.getNextMoveLocation();
-                if (location && location.isValid()) {
-                    unit.turnToMove = this.mapService.getTerrain(location).movementCost(unit.type);
-                    console.log(unit.name + ' will move on turn ' + unit.turnToMove);
-                    const unitInWay = this.unitService.unitAt(location);
-                    if (unitInWay) {
-                        unit.turnToMove = 1;
-                    }
-                } else {
-                    unit.clearOrders();
+        this.unitService.units.filter(UnitService.activeUnitsFilter).forEach((unit: UnitComponent) => {
+            const location = unit.getNextMoveLocation();
+            if (location && location.isValid()) {
+                unit.turnToMove = this.mapService.getTerrain(location).movementCost(unit.type);
+                console.log(unit.name + ' will move on turn ' + unit.turnToMove);
+                const unitInWay = this.unitService.unitAt(location);
+                if (unitInWay) {
+                    unit.turnToMove = 1;
                 }
-
+            } else {
+                unit.clearOrders();
             }
         });
 
 
         for (let turn = 1; turn <= this.SUBTURNS; turn++) {
-            this.unitService.units.forEach(unit => {
+            this.unitService.units.filter(UnitService.activeUnitsFilter).forEach(unit => {
                 if (unit.turnToMove === turn) {
                     const location = unit.getNextMoveLocation();
                     if (location && location.isValid()) {

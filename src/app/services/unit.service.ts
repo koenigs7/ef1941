@@ -21,6 +21,10 @@ export class UnitService {
         return unit.nationality !== Nationality.RUSSIAN;
     }
 
+    static militiaFilter(unit:UnitComponent): boolean {
+        return unit.name.includes('Militia');
+    }
+
 
     unitAt(location: Location): UnitComponent {
         return this.units.find(unit => unit.x === location.x && unit.y === location.y && unit.state === UnitState.ACTIVE);
