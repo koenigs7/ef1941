@@ -18,8 +18,7 @@ img {
     padding: 5px;
 }
 
-.unit:hover .tooltip {
+.unit:hover + .tooltip {
     visibility: visible;
-    z-index: 100;
   }
 

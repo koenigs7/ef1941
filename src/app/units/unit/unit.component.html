@@ -1,15 +1,17 @@
-<div (click)=clicked($event) 
-    class="unit" [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px', 'display': state?'none':'block' , 'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
+<div (click)=clicked($event) class="unit"
+    [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px', 'display': state?'none':'block' , 'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
     <img style="vertical-align: top;" src={{imageSrc}}>
-    <div class="tooltip">
-        <div>{{name}}</div>
-        <div>{{combatStrength}}/{{musterStrength}}</div>
-        <div>
-            [{{x}},{{y}}]
-        </div>
+</div>
+<div [ngStyle]="{'top':(screenY + 45) +'px' , 'left':screenX +'px'}" class="tooltip">
+    <div>{{name}}</div>
+    <div>{{combatStrength}}/{{musterStrength}}</div>
+    <div>
+        [{{x}},{{y}}]
     </div>
 </div>
 
 <div *ngFor="let unused of orders; index as i">
-        <img *ngIf="selected && orders[i]" [ngStyle]="{ 'position':'absolute', 'transform':'rotate('+ getArrowRotation(i) + 'deg)'  , 'z-index':z-1, 'top':getArrowLocation(i).y +'px' , 'left':getArrowLocation(i).x +'px'  }" src="assets/images/units/arrow.png"> 
+    <img *ngIf="selected && orders[i]"
+        [ngStyle]="{ 'position':'absolute', 'transform':'rotate('+ getArrowRotation(i) + 'deg)'  , 'z-index':z-1, 'top':getArrowLocation(i).y +'px' , 'left':getArrowLocation(i).x +'px'  }"
+        src="assets/images/units/arrow.png">
 </div>
