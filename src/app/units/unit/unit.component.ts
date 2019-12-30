@@ -87,7 +87,7 @@ export class UnitComponent implements OnInit {
         this.combatStrength = +this.musterStrength;
         this.setLocation(new Location(45 - this.x, 38 - this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
         this.moveService.orders.subscribe(direction => {
-            if (direction && this.selected) {
+            if (direction && this.selected && this.orders.length < 10) {
                 this.orders.push(direction);
             }
         });
@@ -110,7 +110,7 @@ export class UnitComponent implements OnInit {
         this.x = location.x;
         this.y = location.y;
         this.screenX = this.x * 40 + 13;
-        this.screenY = this.y * 40 + 13;
+        this.screenY = this.y * 40 + 13 + 20;
         console.log('setting location to ' + location);
     }
 
@@ -189,7 +189,7 @@ export class UnitComponent implements OnInit {
 
     getArrowLocation(index: number): Location {
         const location = new Location(this.x, this.y).ifMovedTo(this.orders.slice(0, index + 1));
-        return new Location(location.x * 40 + 13, location.y * 40 + 13);
+        return new Location(location.x * 40 + 13, location.y * 40 + 13 + 20);
     }
 
     getArrowRotation(index: number): number {
