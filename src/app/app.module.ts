@@ -11,6 +11,7 @@ import { UnitService } from './services/unit.service';
 import { CombatService } from './services/combat.service';
 import { SupplyService } from './services/supply.service';
 import { AIService } from './services/ai.service';
+import { AudioService } from './services/audio.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { AIService } from './services/ai.service';
   imports: [
     BrowserModule
   ],
-  providers: [TurnService,MapService,UnitService,AIService,CombatService,SupplyService],
+  providers: [TurnService,MapService,UnitService,AIService,CombatService,SupplyService,AudioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

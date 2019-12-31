@@ -4,11 +4,12 @@ import { MapService } from './map.service';
 import { UnitService } from './unit.service';
 import { Direction } from '../model/direction';
 import { Terrain } from '../model/terrain';
+import { AudioService } from './audio.service';
 
 @Injectable()
 export class CombatService {
 
-    constructor(private mapService: MapService, private unitService: UnitService) {}
+    constructor(private mapService: MapService, private unitService: UnitService, private audioService: AudioService) {}
     
     resolve(attacker: UnitComponent, defender: UnitComponent): any {
         let defenderStrength = defender.combatStrength;
@@ -20,6 +21,8 @@ export class CombatService {
         if ( this.getRandom() > attacker.combatStrength ) {
             return;
         }
+        this.audioService.shot();
+        
         if (defender.takeLossAndCheckForDead(CombatLossType.STANDARD)) {
             console.log(defender.name+' died');
             return;

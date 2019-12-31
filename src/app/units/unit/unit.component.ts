@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
+import { AudioService } from 'src/app/services/audio.service';
 
 export enum Nationality {
     GERMAN = 'G',
@@ -82,8 +83,8 @@ export class UnitComponent implements OnInit {
     }
 
     static AddOrder(direction: Direction) {
-        if ( UnitComponent.Selected && UnitComponent.Selected.orders.length < 10 ) {
-            UnitComponent.Selected.orders.push(direction);
+        if ( UnitComponent.Selected && UnitComponent.Selected.orders.length < 10 ) { 
+            UnitComponent.Selected.addOrder(direction);
         }
     }
 
@@ -93,7 +94,7 @@ export class UnitComponent implements OnInit {
         }
     }
 
-    constructor() {
+    constructor(private audioService: AudioService) {
         UnitComponent.allUnits.push(this);
     }
 
@@ -171,6 +172,11 @@ export class UnitComponent implements OnInit {
         return this.orders[0];
     }
 
+    addOrder(direction):void {
+        this.orders.push(direction);
+        this.audioService.move();
+    }
+
     move(direction: Direction) {
         this.setLocation(this.getLocation().offsetBy(direction));
     }
@@ -202,6 +208,7 @@ export class UnitComponent implements OnInit {
         this.musterStrength -= lossType;
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 10) {
+            this.audioService.dead();
             return this.changeState(UnitState.DEAD);
         } else {
             return UnitState.ACTIVE;
