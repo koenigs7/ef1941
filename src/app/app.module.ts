@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './pages/map/map.component';
 import { UnitComponent } from './units/unit/unit.component';
 import { KeyHanderComponent } from './events/key.handlers';
-import { OrderService } from './services/move.service';
 import { TurnService } from './services/turn.service';
 import { MapService } from './services/map.service';
 import { UnitService } from './services/unit.service';
@@ -23,7 +22,7 @@ import { AIService } from './services/ai.service';
   imports: [
     BrowserModule
   ],
-  providers: [OrderService,TurnService,MapService,UnitService,AIService,CombatService,SupplyService],
+  providers: [TurnService,MapService,UnitService,AIService,CombatService,SupplyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

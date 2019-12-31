@@ -1,6 +1,7 @@
 import { HostListener, Component } from '@angular/core';
-import { OrderService } from '../services/move.service';
 import { TurnService } from '../services/turn.service';
+import { UnitComponent } from '../units/unit/unit.component';
+import { Direction } from '../model/direction';
 
 @Component({
     selector: 'app-event',
@@ -8,20 +9,25 @@ import { TurnService } from '../services/turn.service';
 })
 export class KeyHanderComponent {
 
-    constructor(private moveService: OrderService, private combatService: TurnService) { }
+    constructor( private combatService: TurnService ) { }
 
     @HostListener('body:keydown', ['$event'])
     onKeyDown(ev: KeyboardEvent) {
         // do something meaningful with it
         // console.log(`The user just pressed ${ev.key}!`);
-        this.moveService.addOrder(ev);
-        if ( ev.keyCode === 83) {
-            this.moveService.removeFocusedUnit();
+
+        if ( ev.keyCode >= 37 && ev.keyCode <= 41 ) {
+            let direction = ev.keyCode - 37;
+            if ( direction === Direction.NONE ) direction  = Direction.WEST;
+            UnitComponent.AddOrder(direction); 
+            ev.preventDefault();
+        }
+        if ( ev.keyCode === 83 ) {  // S
+            UnitComponent.ClearSelected();
             this.combatService.startCombat();
         }
-        if ( ev.keyCode === 67) {
-            this.moveService.cancelOrders();
+        if ( ev.keyCode === 67 ) {  // C
+            UnitComponent.ClearOrders();
         }
     }
- 
 }

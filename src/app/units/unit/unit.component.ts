@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderService } from 'src/app/services/move.service'; 
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
 
@@ -53,6 +52,7 @@ export class UnitComponent implements OnInit {
     static allUnits: UnitComponent[] = [];
 
     static SELECTED_BORDER_WIDTH = 5;
+    static Selected: UnitComponent = null;
 
     @Input() x: number;
     @Input() y: number;
@@ -65,17 +65,35 @@ export class UnitComponent implements OnInit {
     public screenX: number;
     public screenY: number;
     public z = 2;
-    public selected = false;
+    private selected = false;
     public orders: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType;
     public state: UnitState;
     public imageSrc: string;
 
-
     private armorNames = ['Panzer','Tank','Cav'];
 
-    constructor(private moveService: OrderService) {
+    static ClearSelected() {
+        if ( UnitComponent.Selected ) {
+            UnitComponent.Selected.clearFocus();
+        }
+        UnitComponent.Selected = null;
+    }
+
+    static AddOrder(direction: Direction) {
+        if ( UnitComponent.Selected && UnitComponent.Selected.orders.length < 10 ) {
+            UnitComponent.Selected.orders.push(direction);
+        }
+    }
+
+    static ClearOrders() {
+        if ( UnitComponent.Selected ) {
+            UnitComponent.Selected.clearOrders();
+        }
+    }
+
+    constructor() {
         UnitComponent.allUnits.push(this);
     }
 
@@ -86,27 +104,30 @@ export class UnitComponent implements OnInit {
         this.state = +this.arrive === 0 ? UnitState.ACTIVE : UnitState.RESERVE;
         this.combatStrength = +this.musterStrength;
         this.setLocation(new Location(45 - this.x, 38 - this.y)); // CC used a 0,0 bottom right.. I'm using 0,0 top left
-        this.moveService.orders.subscribe(direction => {
-            if (direction && this.selected && this.orders.length < 10) {
-                this.orders.push(direction);
-            }
-        });
-        this.moveService.focused.subscribe(unit => {
-            if (this === unit && !this.selected) {
-                this.screenX -= UnitComponent.SELECTED_BORDER_WIDTH;
-                this.screenY -= UnitComponent.SELECTED_BORDER_WIDTH;
-                this.selected = true;
-                this.z = 4;
-            } else if (this.selected === true) {
-                this.screenX += UnitComponent.SELECTED_BORDER_WIDTH;
-                this.screenY += UnitComponent.SELECTED_BORDER_WIDTH;
-                this.selected = false;
-                this.z = 2;
-            }
-        });
     }
 
-    public setLocation(location: Location) {
+    public setFocus() {
+        if ( this.selected ) {
+            this.clearFocus();
+        } else {
+            if ( UnitComponent.Selected) UnitComponent.Selected.clearFocus();
+            this.screenX -= UnitComponent.SELECTED_BORDER_WIDTH;
+            this.screenY -= UnitComponent.SELECTED_BORDER_WIDTH;
+            this.selected = true;
+            this.z = 4;
+            UnitComponent.Selected = this;
+        }
+    }
+
+    public clearFocus(): void {
+        this.screenX += UnitComponent.SELECTED_BORDER_WIDTH;
+        this.screenY += UnitComponent.SELECTED_BORDER_WIDTH;
+        this.z = 2;
+        this.selected = false;
+        UnitComponent.Selected = null;
+    }
+
+    public setLocation(location: Location): void {
         this.x = location.x;
         this.y = location.y;
         this.screenX = this.x * 40 + 13;
@@ -119,12 +140,12 @@ export class UnitComponent implements OnInit {
     }
 
 
-    clearOrders(): any {
+    clearOrders(): void {
         this.orders = [];
     }
 
-    clicked() {
-        this.moveService.setFocusedUnit(this);
+    clicked(): void {
+       this.setFocus();
     }
 
     moveByOrders(): Direction {
