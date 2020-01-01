@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
     static singleton: HeaderComponent = null;
 
-    date = new Date(1942,6,6);
+    date = new Date(1941,5,22);
     score = 0;
 
     static incrementDate() {
@@ -16,13 +16,17 @@ export class HeaderComponent implements OnInit {
     }
 
 
-    constructor() { }
+    constructor() {
+        HeaderComponent.singleton = this;
+     }
 
     ngOnInit() {
     }
 
     incrementDate() {
-
+        const tempDate = new Date(this.date.valueOf());
+        tempDate.setDate(this.date.getDate() + 7);
+        this.date = tempDate;
     }
 
 }
