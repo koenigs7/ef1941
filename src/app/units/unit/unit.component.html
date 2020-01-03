@@ -16,3 +16,9 @@
         [ngStyle]="{ 'position':'absolute', 'transform':'rotate('+ getArrowRotation(i) + 'deg)'  , 'z-index':z-1, 'top':getArrowLocation(i).y +'px' , 'left':getArrowLocation(i).x +'px'  }"
         src="assets/images/units/arrow.png">
 </div>
+
+<div *ngFor="let path of supplyPath; index as i">
+    <img *ngIf="selected && supplyPath[i]"
+        [ngStyle]="{ 'position':'absolute', 'z-index':z-1, 'top':getSupplyLocation(i).y +'px' , 'left':getSupplyLocation(i).x +'px'  }"
+        src="assets/images/units/green-dot.png">
+</div>

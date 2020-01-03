@@ -69,6 +69,7 @@ export class UnitComponent implements OnInit {
     public z = 2;
     private selected = false;
     public orders: Direction[] = [];
+    public supplyPath: Direction[] = [];
     public turnToMove = 0;
     public type: UnitType;
     public state: UnitState;
@@ -228,6 +229,11 @@ export class UnitComponent implements OnInit {
 
     getArrowLocation(index: number): Location {
         const location = new Location(this.x, this.y).ifMovedTo(this.orders.slice(0, index + 1));
+        return new Location(location.x * 40 + 13, location.y * 40 + 13 + 20);
+    }
+
+    getSupplyLocation(index: number): Location {
+        const location = new Location(this.x, this.y).ifMovedTo(this.supplyPath.slice(0, index + 1));
         return new Location(location.x * 40 + 13, location.y * 40 + 13 + 20);
     }
 
