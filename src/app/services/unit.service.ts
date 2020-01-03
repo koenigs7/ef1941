@@ -22,7 +22,7 @@ export class UnitService {
     }
 
     static militiaFilter(unit:UnitComponent): boolean {
-        return unit.name.toLowerCase().includes('militia');
+        return unit.isMilitia();
     }
 
 

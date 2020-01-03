@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
 import { AudioService } from 'src/app/services/audio.service';
+import { HeaderComponent } from 'src/app/header/header.component';
 
 export enum Nationality {
     GERMAN = 'G',
@@ -72,6 +73,7 @@ export class UnitComponent implements OnInit {
     public type: UnitType;
     public state: UnitState;
     public imageSrc: string;
+    public supplyPercent = '100';
 
     private armorNames = ['Panzer','Tank','Cav'];
 
@@ -189,6 +191,10 @@ export class UnitComponent implements OnInit {
         }
     }
 
+    isMilitia() {
+        return this.name.toLowerCase().includes('militia');
+    }
+
     changeState(newState: UnitState): UnitState {
         this.state = newState;
         if (newState === UnitState.DEAD) {
@@ -209,6 +215,11 @@ export class UnitComponent implements OnInit {
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 10) {
             this.audioService.dead();
+            if ( this.nationality === Nationality.RUSSIAN ) {
+                HeaderComponent.incrementLosses(Alliance.ALLIES);
+            } else {
+                HeaderComponent.incrementLosses(Alliance.AXIS);
+            }
             return this.changeState(UnitState.DEAD);
         } else {
             return UnitState.ACTIVE;

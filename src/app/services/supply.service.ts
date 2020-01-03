@@ -32,6 +32,7 @@ export class SupplyService {
                 } else {
                     unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
                 }
+                unit.supplyPercent = supplyPercent + '';
             }
         });
         this.zocMap = this.unitService.createZOCmap(Alliance.AXIS);
@@ -51,6 +52,7 @@ export class SupplyService {
                 } else {
                     unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
                 }
+                unit.supplyPercent = supplyPercent + '';
             }
         });
 

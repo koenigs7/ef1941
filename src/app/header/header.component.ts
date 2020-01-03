@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Nationality, Alliance } from '../units/unit/unit.component';
 
 @Component({
     selector: 'app-header',
@@ -10,9 +11,15 @@ export class HeaderComponent implements OnInit {
 
     date = new Date(1941,5,22);
     score = 0;
+    axisLosses = 0;
+    alliesLosses = 0;
 
     static incrementDate() {
         this.singleton.incrementDate();
+    }
+
+    static incrementLosses(alliance: Alliance) {
+        this.singleton.incrementLosses(alliance);
     }
 
 
@@ -21,6 +28,10 @@ export class HeaderComponent implements OnInit {
      }
 
     ngOnInit() {
+    }
+
+    incrementLosses(alliance: Alliance) {
+        alliance === Alliance.ALLIES ? this.alliesLosses++ : this.axisLosses++;
     }
 
     incrementDate() {
