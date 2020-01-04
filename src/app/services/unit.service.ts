@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent,  UnitState, Nationality, Alliance } from '../units/unit/unit.component';
+import { UnitComponent } from '../units/unit/unit.component';
 import { Location } from '../model/location';
 import { Direction } from '../model/direction';
+import { UnitState, Nationality, Alliance } from '../units/unit/unit.enums';
 
 
 @Injectable()

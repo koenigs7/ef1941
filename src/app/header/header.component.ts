@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Nationality, Alliance } from '../units/unit/unit.component';
+import { Alliance } from '../units/unit/unit.enums';
 
 @Component({
     selector: 'app-header',
@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
     score = 0;
     axisLosses = 0;
     alliesLosses = 0;
+    gameState = 'Enter orders';
 
     static incrementDate() {
         this.singleton.incrementDate();
@@ -22,6 +23,9 @@ export class HeaderComponent implements OnInit {
         this.singleton.incrementLosses(alliance);
     }
 
+    static setGameState(state: string) {
+        this.singleton.gameState = state;
+    }
 
     constructor() {
         HeaderComponent.singleton = this;

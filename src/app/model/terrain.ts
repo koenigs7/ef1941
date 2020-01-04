@@ -1,5 +1,4 @@
-import { UnitType } from '../units/unit/unit.component';
-
+import { UnitType } from '../units/unit/unit.enums';
 
 export class Terrain {
 

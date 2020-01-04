@@ -3,20 +3,7 @@ import { Direction } from 'src/app/model/direction';
 import { Location } from 'src/app/model/location';
 import { AudioService } from 'src/app/services/audio.service';
 import { HeaderComponent } from 'src/app/header/header.component';
-
-export enum Nationality {
-    GERMAN = 'G',
-    RUSSIAN = 'R',
-    FINNISH = 'F',
-    HUNGARIAN = 'H',
-    ROMAINIAN = 'O',
-    ITALIAN = 'I'
-}
-
-export enum Alliance {
-    AXIS,
-    ALLIES
-}
+import { Alliance, UnitState, Nationality, UnitType, CombatLossType} from './unit.enums';
 
 const ImageMap = {
     'G': ['grey.png', 'greyi.png'],
@@ -26,23 +13,6 @@ const ImageMap = {
     'H': ['green.png', 'green.png'],
     'I': ['green.png', 'green.png']
 };
-
-export enum UnitType {
-    ARMOR,
-    INFANTRY
-}
-
-export enum CombatLossType {
-    STANDARD = 1,
-    RETREAT = 2,
-    NORETREAT = 3
-}
-
-export enum UnitState {
-    ACTIVE,
-    DEAD,
-    RESERVE
-}
 
 @Component({
     selector: 'app-unit',
@@ -69,7 +39,7 @@ export class UnitComponent implements OnInit {
     public z = 2;
     private selected = false;
     public orders: Direction[] = [];
-    public supplyPath: Direction[] = [];
+    public supplyPath: Location[] = [];
     public turnToMove = 0;
     public type: UnitType;
     public state: UnitState;
@@ -233,7 +203,7 @@ export class UnitComponent implements OnInit {
     }
 
     getSupplyLocation(index: number): Location {
-        const location = new Location(this.x, this.y).ifMovedTo(this.supplyPath.slice(0, index + 1));
+        const location =  this.supplyPath[index];
         return new Location(location.x * 40 + 13, location.y * 40 + 13 + 20);
     }
 

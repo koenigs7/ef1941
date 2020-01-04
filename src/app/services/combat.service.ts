@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { UnitComponent, CombatLossType, Nationality, Alliance } from '../units/unit/unit.component';
+import { UnitComponent } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { UnitService } from './unit.service';
 import { Direction } from '../model/direction';
 import { Terrain } from '../model/terrain';
 import { AudioService } from './audio.service';
+import { CombatLossType, Nationality, Alliance } from '../units/unit/unit.enums';
 
 @Injectable()
 export class CombatService {

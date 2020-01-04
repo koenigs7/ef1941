@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Nationality, UnitComponent } from '../units/unit/unit.component';
+import { UnitComponent } from '../units/unit/unit.component';
 import { UnitService } from './unit.service';
 import { Direction } from '../model/direction';
 import { Location } from '../model/location';
+import { Nationality } from '../units/unit/unit.enums';
 
 @Injectable()
 export class AIService {
@@ -62,7 +63,7 @@ export class AIService {
 
         this.inaction.forEach(unit => {
             const ifr: IFR = this.ifrMap.get(unit.name);
-            console.log(unit.name,ifr.ifrs[0]);
+            // console.log(unit.name,ifr.ifrs[0]);
             if ( ifr.ifrs[0] > unit.combatStrength -10 ) {  // Retreat if lots of trouble
                 const retreatDirection = (ifr.maxThreat() + 2) % 4;
                 unit.orders.push(retreatDirection);

@@ -1,8 +1,11 @@
 import { Direction } from './direction';
 import { getLocaleCurrencyName } from '@angular/common';
+import { Direct } from 'protractor/built/driverProviders';
 
 
 export class Location {
+
+    previous: Location; // For constructing paths
 
     constructor(public x: number, public y: number) { }
 
@@ -10,6 +13,10 @@ export class Location {
         return '[' + this.x + ',' + this.y + ']';
     }
 
+    equals(loc: Location): boolean {
+        if ( loc == null ) return false;
+        return this.x === loc.x && this.y === loc.y;
+    }
 
     distanceTo(loc: Location): number {
         return Math.sqrt(Math.pow(this.x - loc.x, 2) + Math.pow(this.y - loc.y, 2));
@@ -62,5 +69,28 @@ export class Location {
         return new Location(x, y);
     }
 
+    
+    fourNeighbors(supplyDirection: Direction): Location[] {
+        const neighbors = [];
+        for ( const direction of [Direction.NORTH, Direction.EAST,Direction.SOUTH,Direction.WEST] ) {
+            if ( supplyDirection === Direction.WEST &&  direction === Direction.EAST ) continue;
+            if ( supplyDirection === Direction.EAST &&  direction === Direction.WEST ) continue;
+
+            const loc = this.offsetBy(direction);
+            if ( loc.isValid()) neighbors.push(loc);
+        } 
+        return neighbors;
+    }
+
+    
+    getPath(): Location[] {
+        const locs = [];
+        let current:Location = this;
+        while ( current ) {
+            locs.push(current);
+            current = current.previous;
+        }
+        return locs;
+    }
 
 }

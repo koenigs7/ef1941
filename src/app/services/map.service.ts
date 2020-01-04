@@ -65,7 +65,7 @@ export class MapService {
     
     getTerrainAt(x:number,y:number): Terrain {
         const terrainCode = this.theMap[y][x];
-        console.log('Terrain at '+x+','+y+'='+terrainCode);
+        // console.log('Terrain at '+x+','+y+'='+terrainCode);
         if ( terrainCode === 0 ) {
             return Terrain.CLEAR;
         } else if ( terrainCode >= 1 && terrainCode <= 6 ) {

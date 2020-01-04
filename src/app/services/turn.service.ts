@@ -1,11 +1,12 @@
-import { UnitComponent, UnitState, Nationality } from '../units/unit/unit.component';
+import { UnitComponent } from '../units/unit/unit.component';
 import { MapService } from './map.service';
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
 import { CombatService } from './combat.service';
 import { SupplyService } from './supply.service';
-import { AIService } from './ai.service';
+import { AIService } from './ai.service'; 
 import { HeaderComponent } from '../header/header.component';
+import { Nationality, UnitState } from '../units/unit/unit.enums';
 
 
 @Injectable()
@@ -22,7 +23,7 @@ export class TurnService {
         if (this.combatInProgress) {
             return;
         }
-        this.combatInProgress = true;
+        this.combatInProgress = true; 
 
         this.unitService.units.filter(UnitService.activeUnitsFilter).forEach((unit: UnitComponent) => {
             const location = unit.getNextMoveLocation();
@@ -74,8 +75,6 @@ export class TurnService {
             console.log(turn);
 
         }
-        this.supplyService.calculateSupply();
-        this.turnNumber++;
         // Activate Reserves
         this.unitService.units.forEach(unit => {
             if (+unit.arrive === this.turnNumber) {
@@ -87,9 +86,11 @@ export class TurnService {
                     unit.changeState(UnitState.ACTIVE);
                 }
             }
-        });
+        }); 
+        this.supplyService.calculateSupply();
+        this.turnNumber++;
         this.aiService.calculateIFRs(Nationality.RUSSIAN);
-        this.combatInProgress = false;
+        this.combatInProgress = false; 
         HeaderComponent.incrementDate();
     }
 
