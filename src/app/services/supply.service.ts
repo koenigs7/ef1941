@@ -19,37 +19,30 @@ export class SupplyService {
     calculateSupply() {
         // Calculate Axis supply.  Create Allies ZOC map, remove ZOC where Axis are, then check for route
         this.zocMap = this.unitService.createZOCmap(Alliance.ALLIES);
-        this.unitService.units.forEach((unit: UnitComponent) => {
-            if (unit.nationality !== Nationality.RUSSIAN) {
-                this.zocMap.set(unit.getLocation().toString(), 0);
-            }
+        this.unitService.activeAxis().forEach(unit => {
+            this.zocMap.set(unit.getLocation().toString(), 0);
         });
         console.log('alliesZocMap', this.zocMap);
-        this.unitService.units.forEach((unit: UnitComponent) => {
-            if (unit.nationality !== Nationality.RUSSIAN) {
-                unit.supplyPath = [];
-                let supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 100, Direction.WEST);
-                if (supplyPercent === 0) {
-                    console.log(unit.name + ' out of supply');
-                    unit.combatStrength -= Math.round(unit.combatStrength / 2);
-                } else {
-                    supplyPercent = Math.min(supplyPercent, 100);
-                    unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
-                }
-                unit.supplyPercent = supplyPercent + '';
+        this.unitService.activeAxis().forEach(unit => {
+            unit.supplyPath = [];
+            let supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 100, Direction.WEST);
+            if (supplyPercent === 0) {
+                console.log(unit.name + ' out of supply');
+                unit.combatStrength -= Math.round(unit.combatStrength / 2);
+            } else {
+                supplyPercent = Math.min(supplyPercent, 100);
+                unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
             }
+            unit.supplyPercent = supplyPercent + '';
         });
 
 
         this.zocMap = this.unitService.createZOCmap(Alliance.AXIS);
-        this.unitService.units.forEach((unit: UnitComponent) => {
-            if (unit.nationality === Nationality.RUSSIAN) {
-                this.zocMap.set(unit.getLocation().toString(), 0);
-            }
+        this.unitService.activeAllies().forEach(unit=> { 
+                this.zocMap.set(unit.getLocation().toString(), 0); 
         });
         console.log('axisZocMap', this.zocMap);
-        this.unitService.units.forEach((unit: UnitComponent) => {
-            if (unit.nationality === Nationality.RUSSIAN) {
+        this.unitService.activeAllies().forEach(unit=> { 
                 unit.supplyPath = [];
                 const supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 120, Direction.EAST);
                 if (supplyPercent === 0) {
@@ -58,8 +51,7 @@ export class SupplyService {
                 } else {
                     unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
                 }
-                unit.supplyPercent = supplyPercent + '';
-            }
+                unit.supplyPercent = supplyPercent + ''; 
         });
 
     }

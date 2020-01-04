@@ -10,6 +10,7 @@ export class UnitService {
 
     units: UnitComponent[] = UnitComponent.allUnits;
 
+
     static activeUnitsFilter(unit: UnitComponent): boolean {
         return unit.state === UnitState.ACTIVE;
     }
@@ -25,7 +26,14 @@ export class UnitService {
     static militiaFilter(unit:UnitComponent): boolean {
         return unit.isMilitia();
     }
+    
+    activeAllies(): UnitComponent[] {
+        return this.units.filter(UnitService.alliesFilter).filter(UnitService.activeUnitsFilter);
+    }
 
+    activeAxis(): UnitComponent[] {
+        return this.units.filter(UnitService.axisFilter).filter(UnitService.activeUnitsFilter);
+    }
 
     unitAt(location: Location): UnitComponent {
         return this.units.find(unit => unit.x === location.x && unit.y === location.y && unit.state === UnitState.ACTIVE);
