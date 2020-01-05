@@ -21,6 +21,7 @@ export class AIService {
         this.inaction = [];
         this.unitService.units.filter(UnitService.activeUnitsFilter).filter(UnitService.alliesFilter).forEach(
             unit => {
+                unit.clearOrders();
                 const ifr = new IFR();
                 const unitLoc = unit.getLocation();
                 this.unitService.units.filter(UnitService.activeUnitsFilter).filter(UnitService.axisFilter).forEach(enemyUnit => {
