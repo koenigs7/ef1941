@@ -6,7 +6,7 @@ import { CombatService } from './combat.service';
 import { SupplyService } from './supply.service';
 import { AIService } from './ai.service'; 
 import { HeaderComponent } from '../header/header.component';
-import { Nationality, UnitState } from '../units/unit/unit.enums';
+import { Nationality, UnitState, Alliance } from '../units/unit/unit.enums';
 
 
 @Injectable()
@@ -89,7 +89,7 @@ export class TurnService {
         }); 
         this.supplyService.calculateSupply();
         this.turnNumber++;
-        this.aiService.calculateIFRs(Nationality.RUSSIAN);
+        this.aiService.startAI(Alliance.ALLIES);
         this.combatInProgress = false; 
         HeaderComponent.incrementDate();
     }
