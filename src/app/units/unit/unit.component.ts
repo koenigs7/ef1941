@@ -4,6 +4,8 @@ import { Location } from 'src/app/model/location';
 import { AudioService } from 'src/app/services/audio.service';
 import { HeaderComponent } from 'src/app/header/header.component';
 import { Alliance, UnitState, Nationality, UnitType, CombatLossType} from './unit.enums';
+import { MapService } from 'src/app/services/map.service';
+import { Terrain } from 'src/app/model/terrain';
 
 const ImageMap = {
     'G': ['grey.png', 'greyi.png'],
@@ -67,7 +69,7 @@ export class UnitComponent implements OnInit {
         }
     }
 
-    constructor(private audioService: AudioService) {
+    constructor(private audioService: AudioService, private mapService: MapService) {
         UnitComponent.allUnits.push(this);
     }
 
@@ -125,6 +127,9 @@ export class UnitComponent implements OnInit {
     moveByOrders(): Direction {
         if (this.orders[0]) {
             console.log('moving ' + this.name + ' to ' + this.orders[0]);
+            if ( this.combatStrength > 10 ) {
+                this.combatStrength -= 5;
+            }
             this.move(this.orders.shift());
             return this.orders[0];
         } else {
@@ -145,9 +150,17 @@ export class UnitComponent implements OnInit {
         return this.orders[0];
     }
 
-    addOrder(direction):void {
+    addOrder(direction:Direction):void {
+        const currentLocation = this.getLocation().ifMovedTo(this.orders);
         this.orders.push(direction);
-        this.audioService.move();
+        const location = this.getLocation().ifMovedTo(this.orders);
+        const validPath = this.mapService.checkPath(currentLocation,location);
+        if ( !validPath || !location.isValid() || this.mapService.getTerrain(location) === Terrain.SEA ) {
+            this.orders.pop();
+            this.audioService.dead();
+        } else {
+            this.audioService.move();
+        }
     }
 
     move(direction: Direction) {

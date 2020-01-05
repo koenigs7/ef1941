@@ -81,13 +81,13 @@ export class AIService {
         const difX = end.x - start.x;
         const difY = end.y - start.y;
         if (difX === 0) {
-            for (let i = 0; i < difY; i++) {
+            for (let i = 0; i < difY  && i < 5 ; i++) {
                 orders.push(difY > 0? Direction.SOUTH: Direction.NORTH);
             }
         } else if ( difX < 0 ) {
             if ( Math.abs(difX) > Math.abs(difY) ) {
                 let y = 0;
-                for (let i = 0; i < -difX && i < 10; i++) {
+                for (let i = 0; i < -difX && i < 5; i++) {
                     orders.push(Direction.WEST);
                     y += difY/difX;
                     if ( y > 1 ) {

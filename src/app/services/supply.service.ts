@@ -47,6 +47,10 @@ export class SupplyService {
                 const supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 120, Direction.EAST);
                 if (supplyPercent === 0) {
                     console.log(unit.name + ' out of supply');
+                    unit.clearOrders();
+                    for ( let i = 0 ; i < 5 ; i++ ) {
+                        unit.addOrder(Direction.EAST);
+                    }
                     unit.combatStrength -= Math.round(unit.combatStrength / 2);
                 } else {
                     unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
