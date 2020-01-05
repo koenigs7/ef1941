@@ -1,7 +1,7 @@
 <div (click)=clicked($event) class="unit"
     [ngStyle]="{'top':screenY +'px' , 'left':screenX +'px', 'display': state?'none':'block' , 'border': selected ? 'pink 5px solid' :'none', 'z-index': z }">
     <img style="vertical-align: top;" src={{imageSrc}}>
-    <span style="z-index: 10000;position: absolute;left: 0px;">
+    <span style="z-index: 10000;position: absolute;left: 0px; font-weight: bold;">
         {{orders.length}}
     </span>
 </div>

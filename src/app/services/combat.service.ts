@@ -14,12 +14,25 @@ export class CombatService {
     
     resolve(attacker: UnitComponent, defender: UnitComponent): any {
         let defenderStrength = defender.combatStrength;
-        const multipler = this.mapService.getTerrain(defender.getLocation()).defensiveValue;
-        if ( multipler === 2 ) defenderStrength /= 2;
-        if ( multipler === 3 ) defenderStrength *= 2 % 255;
+        const defensiveValue = this.mapService.getTerrain(defender.getLocation()).defensiveValue;
+        if ( defensiveValue === 1 ) defenderStrength /= 2;
+        if ( defensiveValue === 3 ) defenderStrength *= 2 % 255;
         if ( defender.orders.length ) defenderStrength /=2 ;
+        let attackStrength = attacker.combatStrength;
+        const offensiveValue = this.mapService.getTerrain(attacker.getLocation()).offensiveValue;
+        if ( offensiveValue === 2 ) attackStrength /= 2;
+        console.log(attackStrength,defenderStrength);
 
-        if ( this.getRandom() > attacker.combatStrength ) {
+        if ( Math.random() < defenderStrength/255 ) { 
+            console.log('defense succeeded');
+            if ( attacker.takeLossAndCheckForDead(CombatLossType.STANDARD)) {
+                console.log(attacker.name+' died attacking');
+            }
+            return;
+        }
+        const random = Math.random();
+        if ( random > attackStrength/(defenderStrength+attackStrength) ) {
+            console.log('attack failed',random,attackStrength/(defenderStrength+attackStrength));
             return;
         }
         this.audioService.shot();
@@ -29,12 +42,12 @@ export class CombatService {
             return;
         }
         if ( defender.isBroken()) {
-            console.log('defender must retreat');
+            console.log(defender.name + ' must retreat');
             if (defender.takeLossAndCheckForDead(CombatLossType.RETREAT)) {
                 console.log(defender.name+' died retreating');
                 return;
             }
-            const zocMap = this.unitService.createZOCmap(attacker.nationality===Nationality.RUSSIAN?Alliance.ALLIES:Alliance.AXIS);
+            const zocMap = this.unitService.createZOCmap(attacker.getAlliance());
             // try to retreat directly away first
             let retreatDirection = null;
             if ( attacker.getLocation().x === defender.getLocation().x ) {
@@ -42,7 +55,7 @@ export class CombatService {
             } else {
                 retreatDirection = attacker.getLocation().x < defender.getLocation().x ? Direction.EAST : Direction.WEST; 
             }
-            console.log(retreatDirection);
+            console.log(defender.name + ' retreating to the ' + retreatDirection);
             if ( this.isZOCclear(zocMap,defender,retreatDirection) ) {// OK to move there
                 defender.move(retreatDirection);
                 return;
@@ -53,6 +66,8 @@ export class CombatService {
                 return;
             }
             retreatDirection = retreatDirection === Direction.WEST ? Direction.NORTH : retreatDirection + 1;
+            console.log(defender.name + ' retreating to the ' + retreatDirection);
+
             if ( this.isZOCclear(zocMap,defender,retreatDirection) ) {// OK to move there
                 defender.move(retreatDirection);
                 return;
@@ -63,6 +78,8 @@ export class CombatService {
                 return;
             }
             retreatDirection = retreatDirection > 2 ? retreatDirection -2 : retreatDirection + 2;
+            console.log(defender.name + ' retreating to the ' + retreatDirection);
+
             if ( this.isZOCclear(zocMap,defender,retreatDirection) ) {// OK to move there
                 defender.move(retreatDirection);
                 return;
@@ -88,7 +105,7 @@ export class CombatService {
         if ( this.mapService.getTerrain(retreatLocation) === Terrain.SEA ) {
             return false;
         }
-        const value = zocMap.get(retreatLocation.offsetBy(retreatDirection).toString());
+        const value = zocMap.get(retreatLocation.toString());
         return ( value !== 1);
     }
 

@@ -51,7 +51,7 @@ export class TurnService {
                                 console.log(location + ' is occupied by friendly');
                                 unit.turnToMove += 2;
                             } else {
-                                console.log('Combat');
+                                console.log('Combat for ' + unit.name + ' and ' + unitInWay.name);
                                 this.combatService.resolve(unit, unitInWay);
                                 unit.turnToMove += 1;
                             }

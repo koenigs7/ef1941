@@ -85,12 +85,4 @@ export class MapService {
         }
     }
 
-    // getTerrainWithDirection1(x,y,direction:Direction): Terrain {
-    //     if ( direction === Direction.NORTH ) return this.getTerrainAt(x,y-1);
-    //     if ( direction === Direction.EAST ) return this.getTerrainAt(x+1,y);
-    //     if ( direction === Direction.SOUTH ) return this.getTerrainAt(x,y+1);
-    //     if ( direction === Direction.WEST ) return this.getTerrainAt(x-1,y);
-    //     console.log('bad direction '+direction);
-    // }
-
 }

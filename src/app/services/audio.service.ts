@@ -24,7 +24,7 @@ export class AudioService {
         if ( !this.playing && this.sounds.length > 0 ) {
             this.playing = true;
             const sound = this.sounds.pop();
-            console.log('playing ' + sound);
+            // console.log('playing ' + sound);
             this.audio.src = 'assets/sounds/' + sound + '.mp3';
             this.audio.load();
             this.audio.play();

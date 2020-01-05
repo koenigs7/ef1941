@@ -106,7 +106,7 @@ export class UnitComponent implements OnInit {
         this.y = location.y;
         this.screenX = this.x * 40 + 13;
         this.screenY = this.y * 40 + 13 + 20;
-        console.log('setting location to ' + location);
+        // console.log('setting location to ' + location);
     }
 
     public getLocation(): Location {
@@ -166,6 +166,10 @@ export class UnitComponent implements OnInit {
         return this.name.toLowerCase().includes('militia');
     }
 
+    getAlliance(): Alliance {
+        return this.nationality === Nationality.RUSSIAN ? Alliance.ALLIES : Alliance.AXIS;
+    }
+
     changeState(newState: UnitState): UnitState {
         this.state = newState;
         if (newState === UnitState.DEAD) {
@@ -186,11 +190,7 @@ export class UnitComponent implements OnInit {
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 10) {
             this.audioService.dead();
-            if ( this.nationality === Nationality.RUSSIAN ) {
-                HeaderComponent.incrementLosses(Alliance.ALLIES);
-            } else {
-                HeaderComponent.incrementLosses(Alliance.AXIS);
-            }
+            HeaderComponent.incrementLosses(this.getAlliance()); 
             return this.changeState(UnitState.DEAD);
         } else {
             return UnitState.ACTIVE;

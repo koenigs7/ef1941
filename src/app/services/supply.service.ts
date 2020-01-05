@@ -58,10 +58,6 @@ export class SupplyService {
 
     checkSupplyRoute(unit: UnitComponent, location: Location, percent: number, supplyDirection: Direction
     ): number {
-        if (unit.name !== '56 Panzer Corps') {
-            // console.log(location);
-            // return;
-        }
 
         const toVisit: Location[] = [];
         const visited: Location[] = [];
@@ -84,12 +80,12 @@ export class SupplyService {
             if (supplyDirection === Direction.WEST) {
                 if (next.x < 1 || (next.y === 0 && next.x < 13 && unit.nationality === Nationality.FINNISH)) {
                     unit.supplyPath = next.getPath();
-                    return 100;
+                    return percent - unit.supplyPath.length;
                 }
             }
             if (supplyDirection === Direction.EAST && next.x > 44) {
                 unit.supplyPath = next.getPath();
-                return 100;
+                return percent - unit.supplyPath.length;
             }
         }
         return 0;
