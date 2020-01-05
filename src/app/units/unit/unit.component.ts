@@ -120,10 +120,6 @@ export class UnitComponent implements OnInit {
         this.orders = [];
     }
 
-    clicked(): void {
-       this.setFocus();
-    }
-
     moveByOrders(): Direction {
         if (this.orders[0]) {
             console.log('moving ' + this.name + ' to ' + this.orders[0]);
@@ -140,7 +136,7 @@ export class UnitComponent implements OnInit {
     getNextMoveLocation(): Location {
         const move = this.nextOrder();
         if (move) {
-            const nextLocation =  this.getLocation().ifMovedTo([move]);
+            const nextLocation =  this.getLocation().ifMovedTo(move);
             return nextLocation.isValid() ? nextLocation : null;
         }
         return null;
@@ -151,9 +147,9 @@ export class UnitComponent implements OnInit {
     }
 
     addOrder(direction:Direction):void {
-        const currentLocation = this.getLocation().ifMovedTo(this.orders);
+        const currentLocation = this.getLocation().ifMovedTo(...this.orders);
         this.orders.push(direction);
-        const location = this.getLocation().ifMovedTo(this.orders);
+        const location = this.getLocation().ifMovedTo(...this.orders);
         const validPath = this.mapService.checkPath(currentLocation,location);
         if ( !validPath || !location.isValid() || this.mapService.getTerrain(location) === Terrain.SEA ) {
             this.orders.pop();
@@ -211,7 +207,7 @@ export class UnitComponent implements OnInit {
     }
 
     getArrowLocation(index: number): Location {
-        const location = new Location(this.x, this.y).ifMovedTo(this.orders.slice(0, index + 1));
+        const location = new Location(this.x, this.y).ifMovedTo(...this.orders.slice(0, index + 1));
         return new Location(location.x * 40 + 13, location.y * 40 + 13 + 20);
     }
 

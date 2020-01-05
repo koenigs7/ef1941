@@ -18,19 +18,20 @@ export class CombatService {
         if ( defensiveValue === 1 ) defenderStrength /= 2;
         if ( defensiveValue === 3 ) defenderStrength *= 2 % 255;
         if ( defender.orders.length ) defenderStrength /=2 ;
-        let attackStrength = attacker.combatStrength;
         const offensiveValue = this.mapService.getTerrain(attacker.getLocation()).offensiveValue;
-        if ( offensiveValue === 2 ) attackStrength /= 2;
-        console.log(attackStrength,defenderStrength);
-
-        if ( Math.random() < defenderStrength/255 ) { 
-            console.log('defense succeeded');
+        
+        let random = Math.random();
+        if ( random < defenderStrength/255 ) { 
+            console.log('defense succeeded',random,defenderStrength/255);
             if ( attacker.takeLossAndCheckForDead(CombatLossType.STANDARD)) {
                 console.log(attacker.name+' died attacking');
+                return;
             }
-            return;
         }
-        const random = Math.random();
+        let attackStrength = attacker.combatStrength;
+        if ( offensiveValue === 2 ) attackStrength /= 2;
+        console.log(attackStrength,defenderStrength);
+        random = Math.random();
         if ( random > attackStrength/(defenderStrength+attackStrength) ) {
             console.log('attack failed',random,attackStrength/(defenderStrength+attackStrength));
             return;
@@ -95,7 +96,7 @@ export class CombatService {
     }
 
     isZOCclear(zocMap,defender:UnitComponent,retreatDirection) {
-        const retreatLocation = defender.getLocation().ifMovedTo([retreatDirection]);
+        const retreatLocation = defender.getLocation().ifMovedTo(retreatDirection);
         if ( this.unitService.unitAt(retreatLocation)) {
             return false;
         }

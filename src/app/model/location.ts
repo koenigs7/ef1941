@@ -36,7 +36,7 @@ export class Location {
         }
     }
 
-    ifMovedTo(directions: Direction[]): Location {
+    ifMovedTo(...directions: Direction[]): Location {
         let newLocation = new Location(this.x, this.y);
         directions.forEach(direction => {
             newLocation = newLocation.offsetBy(direction);

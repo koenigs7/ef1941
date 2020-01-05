@@ -11,22 +11,11 @@ export class Terrain {
     static COAST = new Terrain(8, 3, 1, 2);
     static SEA = new Terrain(99, 99, 1, 1);
 
-
-    private armorMovementCost;
-    private infantryMovementCost;
-    defensiveValue;
-    offensiveValue;
-
-    constructor(iCost, aCost, defense, offense) {
-        this.armorMovementCost = aCost;
-        this.infantryMovementCost = iCost;
-        this.offensiveValue = offense;
-        this.defensiveValue = defense;
+    constructor( public infantryMovementCost: number, public armorMovementCost: number, public defensiveValue: number, public offensiveValue: number) { 
     }
 
     movementCost(type: UnitType) {
         return type === UnitType.ARMOR ? this.armorMovementCost : this.infantryMovementCost;
     }
-
 
 }
