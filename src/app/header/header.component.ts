@@ -7,6 +7,7 @@ import { Alliance } from '../units/unit/unit.enums';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+    
     static singleton: HeaderComponent = null;
 
     date = new Date(1941,5,22);
@@ -14,6 +15,10 @@ export class HeaderComponent implements OnInit {
     axisLosses = 0;
     alliesLosses = 0;
     gameState = 'Enter orders';
+
+    static setScore(score: number) {
+        this.singleton.score = score;
+    }
 
     static incrementDate() {
         this.singleton.incrementDate();

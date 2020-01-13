@@ -2,6 +2,7 @@ import { HostListener, Component } from '@angular/core';
 import { TurnService } from '../services/turn.service';
 import { UnitComponent } from '../units/unit/unit.component';
 import { Direction } from '../model/direction';
+import { UnitService } from '../services/unit.service';
 
 @Component({
     selector: 'app-event',
@@ -9,7 +10,7 @@ import { Direction } from '../model/direction';
 })
 export class KeyHanderComponent {
 
-    constructor( private combatService: TurnService ) { }
+    constructor( private combatService: TurnService, private unitService: UnitService ) { }
 
     @HostListener('body:keydown', ['$event'])
     onKeyDown(ev: KeyboardEvent) {
@@ -28,6 +29,15 @@ export class KeyHanderComponent {
         }
         if ( ev.keyCode === 67 ) {  // C
             UnitComponent.ClearOrders();
+        }
+        if ( ev.keyCode === 70 ) { // F
+            this.unitService.activeAxis().forEach(unit => {
+                unit.orders.push(Direction.EAST);
+                unit.orders.push(Direction.EAST);
+                unit.orders.push(Direction.EAST);
+                unit.orders.push(Direction.EAST);
+                unit.orders.push(Direction.EAST);
+            });
         }
     }
 }

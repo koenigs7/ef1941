@@ -181,8 +181,11 @@ export class UnitComponent implements OnInit {
 
     changeState(newState: UnitState): UnitState {
         this.state = newState;
+        console.log(this.name + '=>' + this.state);
         if (newState === UnitState.DEAD) {
             this.orders = [];
+            this.audioService.dead();
+            HeaderComponent.incrementLosses(this.getAlliance()); 
             return UnitState.DEAD;
         }
         if (newState === UnitState.RESERVE) {
@@ -198,9 +201,8 @@ export class UnitComponent implements OnInit {
         this.musterStrength -= lossType;
         this.combatStrength -= lossType * 5;
         if (this.combatStrength < 10) {
-            this.audioService.dead();
-            HeaderComponent.incrementLosses(this.getAlliance()); 
-            return this.changeState(UnitState.DEAD);
+            this.changeState(UnitState.DEAD);
+            return UnitState.DEAD;
         } else {
             return UnitState.ACTIVE;
         }

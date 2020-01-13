@@ -71,9 +71,10 @@ export class SupplyService {
             // console.log(next);
             if (!visited.find(p => p.equals(next))) {
                 visited.push(next);
-                for (const n of next.fourNeighbors(supplyDirection)) {
+                for (const n of next.supplyNeighborSquares(supplyDirection)) {
                     if (!visited.find(p => p.equals(n)) && !toVisit.find(p => p.equals(n))
-                        && n.isValid() && this.zocMap.get(n.toString()) !== 1 && this.mapServie.getTerrain(n) !== Terrain.SEA
+                        && n.isValid() && this.zocMap.get(n.toString()) !== 1 
+                        && this.mapServie.getTerrain(n) !== Terrain.SEA
                     ) {
                         toVisit.push(n);
                         n.previous = next;

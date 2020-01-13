@@ -74,10 +74,13 @@ export class AIService {
         this.inaction.forEach(unit => {
             const ifr: IFR = this.ifrMap.get(unit.name);
             // console.log(unit.name,ifr.ifrs[0]);
-            if (ifr.ifrs[0] > unit.combatStrength - 10) {  // Retreat if lots of trouble
+            if (ifr.ifrs[0] > unit.combatStrength - 10 ) {  // Retreat if lots of trouble
                 const retreatDirection = (ifr.maxThreat() + 2) % 4;
                 unit.orders.push(retreatDirection);
                 unit.orders.push(retreatDirection);
+            } else if ( +unit.supplyPercent === 0) {
+                unit.orders.push(Direction.EAST);
+                unit.orders.push(Direction.EAST);
             } else {
                 //  console.log(unit.name,'not in trouble');
             }

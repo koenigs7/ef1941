@@ -7,12 +7,14 @@ import { SupplyService } from './supply.service';
 import { AIService } from './ai.service'; 
 import { HeaderComponent } from '../header/header.component';
 import { Nationality, UnitState, Alliance } from '../units/unit/unit.enums';
+import { ScoreService } from './score.service';
 
 
 @Injectable()
 export class TurnService {
 
     constructor(private mapService: MapService, private unitService: UnitService, private aiService: AIService,
+        private scoreService: ScoreService,
         private supplyService: SupplyService, private combatService: CombatService) { }
 
     private SUBTURNS = 32;
@@ -77,7 +79,7 @@ export class TurnService {
         }
         // Activate Reserves
         this.unitService.units.forEach(unit => {
-            if (+unit.arrive === this.turnNumber) {
+            if (+unit.arrive === this.turnNumber && unit.state !== UnitState.DEAD) {
                 const unitInWay = this.unitService.unitAt(unit.getLocation());
                 if (unitInWay && unitInWay.name !== unit.name) {
                     unit.arrive++;
@@ -88,10 +90,12 @@ export class TurnService {
             }
         }); 
         this.supplyService.calculateSupply();
+        const score = this.scoreService.calculateScore();
         this.turnNumber++;
         this.aiService.startAI(Alliance.ALLIES);
         this.combatInProgress = false; 
         HeaderComponent.incrementDate();
+        HeaderComponent.setScore(score);
     }
 
 

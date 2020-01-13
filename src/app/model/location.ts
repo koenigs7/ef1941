@@ -70,15 +70,25 @@ export class Location {
     }
 
     
-    fourNeighbors(supplyDirection: Direction): Location[] {
+    supplyNeighborSquares(supplyDirection: Direction): Location[] {
         const neighbors = [];
-        for ( const direction of [Direction.NORTH, Direction.EAST,Direction.SOUTH,Direction.WEST] ) {
-            if ( supplyDirection === Direction.WEST &&  direction === Direction.EAST ) continue;
-            if ( supplyDirection === Direction.EAST &&  direction === Direction.WEST ) continue;
 
-            const loc = this.offsetBy(direction);
+        if ( supplyDirection === Direction.WEST ) {
+            let loc = this.ifMovedTo(Direction.WEST);
             if ( loc.isValid()) neighbors.push(loc);
-        } 
+            loc = this.ifMovedTo(Direction.WEST,Direction.NORTH);
+            if ( loc.isValid()) neighbors.push(loc);
+            loc = this.ifMovedTo(Direction.WEST,Direction.SOUTH);
+            if ( loc.isValid()) neighbors.push(loc);
+        }
+        if ( supplyDirection === Direction.EAST ) {
+            let loc = this.ifMovedTo(Direction.EAST);
+            if ( loc.isValid()) neighbors.push(loc);
+            loc = this.ifMovedTo(Direction.EAST,Direction.NORTH);
+            if ( loc.isValid()) neighbors.push(loc);
+            loc = this.ifMovedTo(Direction.EAST,Direction.SOUTH);
+            if ( loc.isValid()) neighbors.push(loc);
+        }
         return neighbors;
     }
 

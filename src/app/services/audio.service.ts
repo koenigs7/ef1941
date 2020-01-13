@@ -32,7 +32,9 @@ export class AudioService {
     }
 
     move() {
-        this.sounds.push('move');
+        if ( this.sounds.length < 10 ) {
+            this.sounds.push('move');
+        }
         this.play();
     }
 
