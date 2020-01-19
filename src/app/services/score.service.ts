@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UnitService } from './unit.service';
+import { MapService } from './map.service';
 
 
 @Injectable()
 export class ScoreService {
 
-    constructor(private unitService: UnitService) {}
+    constructor(private unitService: UnitService, private mapService: MapService) {}
 
     calculateScore(): number {
         let score = 0;

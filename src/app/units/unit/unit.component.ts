@@ -160,7 +160,11 @@ export class UnitComponent implements OnInit {
     }
 
     move(direction: Direction) {
-        this.setLocation(this.getLocation().offsetBy(direction));
+        this.setLocation(this.getLocation().offsetBy(direction)); 
+        const city = this.mapService.isCity(this.x, this.y);
+        if ( city ) {
+            city.owner = this.getAlliance();
+        }
     }
 
     isBroken(): boolean {

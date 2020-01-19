@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Terrain } from '../model/terrain';
-import { Direction } from '../model/direction';
+import { Terrain } from '../model/terrain'; 
 import { Location } from '../model/location';
+import { Alliance } from '../units/unit/unit.enums';
 
+export interface City {
+    x: number;
+    y: number;
+    points: number;
+    owner: Alliance;
+}
 
 @Injectable()
 export class MapService {
@@ -60,11 +66,38 @@ export class MapService {
         [11,1,11,2]
     ];
 
+    cities: City[] = [
+        { x: 12, y: 2, points : 5000, owner: Alliance.ALLIES}
+    ];
+
+    getGermanCityScore(): number {
+        let score = 0;
+        for ( const city of this.cities ) {
+            if ( city.owner === Alliance.AXIS ) {
+                score += city.points;
+            }
+        }
+        console.log('German city score ',score);
+        return score;
+    }
+
+    isCity(x: number, y: number): City {
+        if ( this.getTerrainAt(x,y) !== Terrain.CITY ) {
+            return null;
+        }
+        for ( const city of this.cities ) {
+            if ( city.x === x && city.y === y ) {
+                return city;
+            }
+        }
+        console.log('Error for city at ',x,y);
+    }
+
     getTheMap(): number[][] {
         return this.theMap;
     }
 
-    getTerrain(location:Location) {
+    getTerrain(location:Location): Terrain {
         return this.getTerrainAt(location.x, location.y);
     }
 

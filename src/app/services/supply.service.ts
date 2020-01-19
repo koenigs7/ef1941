@@ -28,10 +28,10 @@ export class SupplyService {
             let supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 100, Direction.WEST);
             if (supplyPercent === 0) {
                 console.log(unit.name + ' out of supply');
-                unit.combatStrength -= Math.round(unit.combatStrength / 2);
+                unit.combatStrength -= Math.round(unit.combatStrength / 3);
             } else {
                 supplyPercent = Math.min(supplyPercent, 100);
-                unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
+                unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
             }
             unit.supplyPercent = supplyPercent + '';
         });
@@ -51,9 +51,9 @@ export class SupplyService {
                     for ( let i = 0 ; i < 5 ; i++ ) {
                         unit.addOrder(Direction.EAST);
                     }
-                    unit.combatStrength -= Math.round(unit.combatStrength / 2);
+                    unit.combatStrength -= Math.round(unit.combatStrength / 3);
                 } else {
-                    unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 100);
+                    unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
                 }
                 unit.supplyPercent = supplyPercent + ''; 
         });

@@ -90,7 +90,7 @@ export class TurnService {
             }
         }); 
         this.supplyService.calculateSupply();
-        const score = this.scoreService.calculateScore();
+        const score = this.scoreService.calculateScore() + this.mapService.getGermanCityScore();
         this.turnNumber++;
         this.aiService.startAI(Alliance.ALLIES);
         this.combatInProgress = false; 

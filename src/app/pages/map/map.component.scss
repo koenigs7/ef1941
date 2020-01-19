@@ -4,6 +4,7 @@ td {
     height: 40px;
     width: 40px;
     padding: 0px;
+    position: relative;
 }
 
 img {
@@ -16,3 +17,19 @@ table {
     border: 5px black solid;
 }
 
+
+.city-detail {
+    visibility: hidden;
+    display: none;
+    top: 30px;
+    border-radius: 5px;
+    z-index: 99;
+    position: absolute;
+    background-color: wheat;
+    padding: 5px;
+}
+
+.city:hover > .city-detail {
+    visibility: visible;
+    display: block;
+  }
