@@ -25,7 +25,7 @@ export class SupplyService {
         console.log('alliesZocMap', this.zocMap);
         this.unitService.activeAxis().forEach(unit => {
             unit.supplyPath = [];
-            let supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 100, Direction.WEST);
+            let supplyPercent: number = this.checkSupplyRoute(unit, unit.getLocation(), 100, Direction.WEST);
             if (supplyPercent === 0) {
                 console.log(unit.name + ' out of supply');
                 unit.combatStrength -= Math.round(unit.combatStrength / 3);
@@ -33,10 +33,14 @@ export class SupplyService {
                 supplyPercent = Math.min(supplyPercent, 100);
                 unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
             }
+            if ( supplyPercent < 50 && this.mapServie.isCity(unit.x, unit.y)) {
+                supplyPercent = 50;
+                console.log('city increased supply',unit.name);
+            }
             unit.supplyPercent = supplyPercent + '';
         });
 
-
+        // Calculate Allird supply.  Create Axis ZOC map, remove ZOC where Allies are, then check for route
         this.zocMap = this.unitService.createZOCmap(Alliance.AXIS);
         this.unitService.activeAllies().forEach(unit=> { 
                 this.zocMap.set(unit.getLocation().toString(), 0); 
@@ -44,7 +48,7 @@ export class SupplyService {
         console.log('axisZocMap', this.zocMap);
         this.unitService.activeAllies().forEach(unit=> { 
                 unit.supplyPath = [];
-                const supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 120, Direction.EAST);
+                let supplyPercent = this.checkSupplyRoute(unit, unit.getLocation(), 120, Direction.EAST);
                 if (supplyPercent === 0) {
                     console.log(unit.name + ' out of supply');
                     unit.clearOrders();
@@ -55,7 +59,12 @@ export class SupplyService {
                 } else {
                     unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
                 }
-                unit.supplyPercent = supplyPercent + ''; 
+                if ( supplyPercent < 75 && this.mapServie.isCity(unit.x, unit.y)) {
+                    supplyPercent = 75;
+                    unit.clearOrders();
+                    console.log('city increased supply',unit.name);
+                }
+                unit.supplyPercent = Math.min(100,supplyPercent) + ''; 
         });
 
     }
