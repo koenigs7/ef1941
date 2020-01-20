@@ -8,6 +8,7 @@ export interface City {
     y: number;
     points: number;
     owner: Alliance;
+    name: string;
 }
 
 @Injectable()
@@ -67,7 +68,25 @@ export class MapService {
     ];
 
     cities: City[] = [
-        { x: 12, y: 2, points : 5000, owner: Alliance.ALLIES}
+        { x: 12, y: 2, points : 10000, owner: Alliance.ALLIES, name: 'Leningrad'},
+        { x: 32, y: 5, points : 5000, owner: Alliance.ALLIES, name: 'Novgorod'},
+        { x: 38, y: 6, points : 5000, owner: Alliance.ALLIES, name: 'Kazan'},
+        { x: 7, y: 8, points : 5000, owner: Alliance.ALLIES, name: 'Riga'},
+        { x: 21, y: 10, points : 5000, owner: Alliance.ALLIES, name: 'Rzhev'},
+        { x: 25, y: 10, points : 25000, owner: Alliance.ALLIES, name: 'Moscow'},
+        { x: 19, y: 14, points : 5000, owner: Alliance.ALLIES, name: 'Smolensk'},
+        { x: 42, y: 14, points : 5000, owner: Alliance.ALLIES, name: 'Saratov'},
+        { x: 12, y: 16, points : 5000, owner: Alliance.ALLIES, name: 'Minsk'},
+        { x: 24, y: 17, points : 5000, owner: Alliance.ALLIES, name: 'Kursk'},
+        { x: 30, y: 17, points : 5000, owner: Alliance.ALLIES, name: 'Voronezh'},
+        { x: 1, y: 19, points : 0, owner: Alliance.AXIS, name: 'Warsaw'},
+        { x: 25, y: 23, points : 5000, owner: Alliance.ALLIES, name: 'Kharkiv'},
+        { x: 39, y: 23, points : 15000, owner: Alliance.ALLIES, name: 'Stalingrad'},
+        { x: 16, y: 24, points : 5000, owner: Alliance.ALLIES, name: 'Kiev'},
+        { x: 25, y: 30, points : 5000, owner: Alliance.ALLIES, name: '???'},
+        { x: 33, y: 30, points : 5000, owner: Alliance.ALLIES, name: 'Rostov'},
+        { x: 19, y: 33, points : 5000, owner: Alliance.ALLIES, name: 'Odessa'},
+        { x: 33, y: 34, points : 5000, owner: Alliance.ALLIES, name: 'Krasnodar'}
     ];
 
     getGermanCityScore(): number {
@@ -123,8 +142,6 @@ export class MapService {
             console.log('unmapped code : '+ terrainCode);
         }
     }
-
-
     
     checkPath(currentLocation: Location, location: Location): boolean {
         for ( const bad of this.badPaths ) {
@@ -136,6 +153,5 @@ export class MapService {
         }
         return true;
     }
-
 
 }

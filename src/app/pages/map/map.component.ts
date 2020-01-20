@@ -18,5 +18,9 @@ export class MapComponent implements OnInit {
     ngOnInit() {
     }
 
+    isCity(row, column) {
+        return this.mapService.isCity(column,row);
+    }
+
 
 }
