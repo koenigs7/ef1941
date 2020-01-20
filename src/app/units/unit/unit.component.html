@@ -6,13 +6,11 @@
     </span>
 </div>
 <div [ngStyle]="{'top':(screenY + 45) +'px' , 'left':screenX +'px'}" class="tooltip">
-    <div>{{name}}</div>
-    <div>{{combatStrength}}/{{musterStrength}}</div>
-    <div>
-        [{{x}},{{y}}]
-    </div>
-    <div>{{supplyPercent}}%</div>
-    <div>{{state}}</div>
+    {{name}}
+    <br>
+    {{combatStrength}}/{{musterStrength}}
+    <br>f
+    {{supplyPercent}}%
 </div>
 
 <div *ngFor="let unused of orders; index as i">

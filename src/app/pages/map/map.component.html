@@ -4,7 +4,13 @@
             <div [ngClass]="isCity(r,c) ? 'city' : ''">
                 <img *ngIf="r <= 24" src="assets/images/map/{{theMap[r][c]}}.png">
                 <img *ngIf="r > 24" src="assets/images/smap/{{theMap[r][c]}}.png">
-                <div *ngIf="isCity(r,c)" class="city-detail">{{isCity(r,c).name}}</div>
+                <div *ngIf="isCity(r,c) as city" class="city-detail">
+                    {{city.name}} 
+                    <br>
+                    {{city.points}}
+                    <br>
+                    {{city.owner ? 'Allies' : 'Axis'}}
+                </div>
             </div>
         </td>
     </tr>

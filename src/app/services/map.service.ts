@@ -83,7 +83,7 @@ export class MapService {
         { x: 25, y: 23, points : 5000, owner: Alliance.ALLIES, name: 'Kharkiv'},
         { x: 39, y: 23, points : 15000, owner: Alliance.ALLIES, name: 'Stalingrad'},
         { x: 16, y: 24, points : 5000, owner: Alliance.ALLIES, name: 'Kiev'},
-        { x: 25, y: 30, points : 5000, owner: Alliance.ALLIES, name: '???'},
+        { x: 25, y: 30, points : 5000, owner: Alliance.ALLIES, name: 'Donetsk'},
         { x: 33, y: 30, points : 5000, owner: Alliance.ALLIES, name: 'Rostov'},
         { x: 19, y: 33, points : 5000, owner: Alliance.ALLIES, name: 'Odessa'},
         { x: 33, y: 34, points : 5000, owner: Alliance.ALLIES, name: 'Krasnodar'}

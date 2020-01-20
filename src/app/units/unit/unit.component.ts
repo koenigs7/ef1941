@@ -185,7 +185,7 @@ export class UnitComponent implements OnInit {
 
     changeState(newState: UnitState): UnitState {
         this.state = newState;
-        console.log(this.name + '=>' + this.state);
+        // console.log(this.name + '=>' + this.state);
         if (newState === UnitState.DEAD) {
             this.orders = [];
             this.audioService.dead();
