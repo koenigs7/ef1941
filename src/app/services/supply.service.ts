@@ -31,11 +31,13 @@ export class SupplyService {
                 unit.combatStrength -= Math.round(unit.combatStrength / 3);
             } else {
                 supplyPercent = Math.min(supplyPercent, 100);
-                unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
             }
             if ( supplyPercent < 50 && this.mapServie.isCity(unit.x, unit.y)) {
                 supplyPercent = 50;
                 console.log('city increased supply',unit.name);
+            }
+            if ( supplyPercent > 0 ) {
+                unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
             }
             unit.supplyPercent = supplyPercent + '';
         });
@@ -56,13 +58,14 @@ export class SupplyService {
                         unit.addOrder(Direction.EAST);
                     }
                     unit.combatStrength -= Math.round(unit.combatStrength / 3);
-                } else {
-                    unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
                 }
                 if ( supplyPercent < 75 && this.mapServie.isCity(unit.x, unit.y)) {
                     supplyPercent = 75;
                     unit.clearOrders();
                     console.log('city increased supply',unit.name);
+                }
+                if ( supplyPercent > 0 ) {
+                    unit.combatStrength = +unit.combatStrength + Math.round((unit.musterStrength - unit.combatStrength) * supplyPercent / 150);
                 }
                 unit.supplyPercent = Math.min(100,supplyPercent) + ''; 
         });
@@ -92,7 +95,9 @@ export class SupplyService {
                 // console.log(toVisit);
             }
             if (supplyDirection === Direction.WEST) {
-                if (next.x < 1 || (next.y === 0 && next.x < 13 && unit.nationality === Nationality.FINNISH)) {
+                if (next.x < 1 || (next.y === 0 && next.x < 13 && unit.nationality === Nationality.FINNISH) || 
+                    ( next.x === 2 && next.y === 10 ) || ( next.x === 5 && next.y === 5)
+                ) {
                     unit.supplyPath = next.getPath();
                     return percent - unit.supplyPath.length;
                 }
